@@ -5,10 +5,10 @@ python-dotenv>=1.0.0
 
 # Optional RAG dependencies (for full AI functionality)
 # Uncomment these when deploying to Vercel or if you have Python 3.11/3.12
-# langchain==0.3.8
-# langchain-groq
-# langchain-community  
-# langchain-text-splitters
-# faiss-cpu
-# sentence-transformers
-# lark
+langchain
+langchain-groq
+langchain-community  
+langchain-text-splitters
+faiss-cpu
+sentence-transformers
+lark
