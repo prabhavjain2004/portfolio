@@ -2,9 +2,5 @@ fastapi
 uvicorn
 pydantic
 python-dotenv
-langchain
 langchain-groq
-langchain-community
-langchain-text-splitters
-faiss-cpu
-langchain-huggingface
+langchain
