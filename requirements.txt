@@ -1,14 +1,10 @@
-fastapi>=0.100.0
-uvicorn>=0.23.0
-pydantic>=2.0.0
-python-dotenv>=1.0.0
-
-# Optional RAG dependencies (for full AI functionality)
-# Uncomment these when deploying to Vercel or if you have Python 3.11/3.12
+fastapi
+uvicorn
+pydantic
+python-dotenv
 langchain
 langchain-groq
-langchain-community  
+langchain-community
 langchain-text-splitters
 faiss-cpu
-sentence-transformers
-lark
+langchain-huggingface

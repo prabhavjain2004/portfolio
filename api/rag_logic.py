@@ -1,15 +1,10 @@
-"""
-RAG (Retrieval-Augmented Generation) Logic for Prabhav's Portfolio
-Uses LangChain, Groq API, and FAISS for intelligent question answering
-"""
-
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceInferenceAPIEmbeddings # <-- NEW
 from langchain.prompts import ChatPromptTemplate
 from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
@@ -17,17 +12,35 @@ from langchain.chains import create_retrieval_chain
 # Load environment variables
 load_dotenv()
 
+# Caching Mechanism
+RAG_CHAIN = None
+
 def get_rag_chain():
     """
-    Initialize and return the RAG chain by LOADING the pre-built FAISS index
+    Initialize and return the RAG chain.
+    Builds the chain on the first call and caches it in memory.
     """
+    global RAG_CHAIN
     
-    print("Initializing Groq LLM...")
+    if RAG_CHAIN:
+        print("Returning cached RAG chain...")
+        return RAG_CHAIN
+
+    print("Building new RAG chain...")
+    
+    # Initialize the Groq LLM (The "Speaker")
     llm = ChatGroq(
         model="llama3-8b-8192",
         temperature=0.7,
         max_tokens=1024,
         api_key=os.getenv("GROQ_API_KEY")
+    )
+    
+    # Initialize the Hugging Face Embeddings (The FREE "Reader")
+    embeddings = HuggingFaceInferenceAPIEmbeddings(
+        api_key=os.getenv("HUGGINGFACE_API_KEY"),
+        # This is the same free model we tried to run locally
+        model_name="BAAI/bge-small-en-v1.5" 
     )
     
     # Define the RAG prompt template
@@ -53,40 +66,42 @@ Answer:"""
 
     prompt = ChatPromptTemplate.from_template(prompt_template)
     
-    # --- This is the new, efficient part ---
-    
-    # Get the path to the pre-built index
+    # Get the current directory of this file
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    DB_PATH = os.path.join(current_dir, "faiss_index")
+    data_dir = os.path.join(current_dir, "data")
     
-    print("Initializing embeddings model (BAAI/bge-small-en-v1.5)...")
-    embeddings = HuggingFaceBgeEmbeddings(
-        model_name="BAAI/bge-small-en-v1.5",
-        model_kwargs={'device': 'cpu'},
-        encode_kwargs={'normalize_embeddings': True}
+    # Load documents
+    print("Loading documents...")
+    loader = DirectoryLoader(
+        data_dir,
+        glob="**/*.md",
+        loader_cls=UnstructuredMarkdownLoader
     )
+    documents = loader.load()
     
-    print(f"Loading pre-built FAISS index from: {DB_PATH}...")
+    # Split documents
+    print("Splitting documents...")
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
+    )
+    split_docs = text_splitter.split_documents(documents)
+    
+    # Create FAISS vector store in memory (fast and low-memory)
+    print("Creating in-memory FAISS vector store...")
     try:
-        vector_store = FAISS.load_local(
-            DB_PATH, 
-            embeddings,
-            # This is required by LangChain for loading FAISS
-            allow_dangerous_deserialization=True 
-        )
-        print("FAISS index loaded successfully.")
+        vector_store = FAISS.from_documents(split_docs, embeddings)
     except Exception as e:
-        print(f"CRITICAL ERROR: Failed to load FAISS index: {e}")
-        # If the index is missing, we must stop
+        print(f"CRITICAL ERROR creating FAISS store: {e}")
+        # This can happen if the Hugging Face key is missing
         return None 
-
+    
     # Create retriever
     retriever = vector_store.as_retriever(
         search_type="similarity",
         search_kwargs={"k": 3}
     )
-    
-    # --- End of new part ---
     
     # Create the document chain
     document_chain = create_stuff_documents_chain(llm, prompt)
@@ -94,29 +109,28 @@ Answer:"""
     # Create the retrieval chain
     retrieval_chain = create_retrieval_chain(retriever, document_chain)
     
-    return retrieval_chain
+    # Cache the chain and return it
+    RAG_CHAIN = retrieval_chain
+    print("RAG chain built and cached successfully.")
+    return RAG_CHAIN
 
 
 def process_query(question: str) -> str:
     """
     Process a user question and return an AI-generated answer
-    
-    Args:
-        question: The user's question about Prabhav's portfolio
-        
-    Returns:
-        The AI-generated answer based on the knowledge base
     """
     try:
-        # Get the RAG chain
         chain = get_rag_chain()
         
-        # Invoke the chain with the user's question
+        if chain is None:
+            return "I'm sorry, my AI components are not configured correctly. Please let Prabhav know about this."
+
         response = chain.invoke({"input": question})
-        
-        # Return the answer
         return response.get("answer", "I apologize, but I couldn't generate an answer. Please try again.")
         
     except Exception as e:
         print(f"Error processing query: {str(e)}")
-        return f"I'm sorry, I encountered an error while processing your question. Please try again later or contact Prabhav directly."
+        # This will catch rate-limit errors from Hugging Face
+        if "RateLimitExceededError" in str(e):
+            return "I'm receiving a lot of questions right now! Please wait a moment and try again."
+        return "I'm sorry, I encountered an error. Please try again later."
