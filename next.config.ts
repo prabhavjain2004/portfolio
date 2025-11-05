@@ -4,7 +4,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
+  reactCompiler: false, // Disabled - can cause issues with React 19
   // Only run rewrites in development (when running `npm run dev`)
   async rewrites() {
     if (!isDev) {
