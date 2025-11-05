@@ -197,3 +197,6 @@ async def root():
         },
         "rag_enabled": USE_RAG
     }
+
+# Vercel serverless function handler
+handler = app
