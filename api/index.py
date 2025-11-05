@@ -169,7 +169,12 @@ async def chat(query: Query):
     try:
         # Use RAG if available, otherwise use mock responses
         if USE_RAG:
-            answer = process_query(query.question)
+            try:
+                answer = process_query(query.question)
+            except Exception as rag_error:
+                # If RAG fails (e.g., missing API key), fall back to mock
+                print(f"RAG error: {rag_error}. Falling back to mock responses.")
+                answer = mock_process_query(query.question)
         else:
             answer = mock_process_query(query.question)
         
