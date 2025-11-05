@@ -1,8 +1,25 @@
 {
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "api/index.py",
+      "use": "@vercel/python"
     }
-  ]
+  ],
+  "routes": [
+    {
+      "src": "/api/chat",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/api/health",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "api/index.py"
+    }
+  ],
+  "env": {
+    "GROQ_API_KEY": "@groq_api_key"
+  }
 }
