@@ -1,18 +1,7 @@
 {
-  "framework": "nextjs",
-  "builds": [
-    {
-      "src": "requirements.txt",
-      "use": "@vercel/python",
-      "config": {
-        "runtime": "python3.11"
-      }
+  "functions": {
+    "api/*.py": {
+      "runtime": "python3.11"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
-    }
-  ]
+  }
 }
