@@ -144,40 +144,27 @@ Try asking about specific topics, or check out the traditional portfolio page fo
 
 (Note: The RAG system will provide more detailed answers once dependencies are fully installed.)"""
 
-# Health check endpoint
-@app.get("/api/health")
-async def health_check():
-    """Check if the API is running"""
+# Shared helpers so we can expose both `/api/*` and bare paths
+def _health_payload() -> dict:
     return {
         "status": "healthy",
         "message": "Prabhav's AI Portfolio API is running",
         "rag_enabled": USE_RAG
     }
 
-# Main chat endpoint
-@app.post("/api/chat")
-async def chat(query: Query):
-    """
-    Process a user question and return an AI-generated answer
-    
-    Args:
-        query: Query object containing the user's question
-        
-    Returns:
-        JSON response with the AI-generated answer
-    """
+
+def _chat_payload(question: str) -> dict:
     try:
-        # Use RAG if available, otherwise use mock responses
         if USE_RAG:
             try:
-                answer = process_query(query.question)
+                answer = process_query(question)
             except Exception as rag_error:
-                # If RAG fails (e.g., missing API key), fall back to mock
+                # Log and fall back when RAG wiring is incomplete in prod
                 print(f"RAG error: {rag_error}. Falling back to mock responses.")
-                answer = mock_process_query(query.question)
+                answer = mock_process_query(question)
         else:
-            answer = mock_process_query(query.question)
-        
+            answer = mock_process_query(question)
+
         return {
             "answer": answer,
             "status": "success",
@@ -190,18 +177,57 @@ async def chat(query: Query):
             "error": str(e)
         }
 
-# Root endpoint for Vercel
-@app.get("/api")
-async def root():
-    """Root endpoint"""
+
+def _root_payload() -> dict:
     return {
         "message": "Welcome to Prabhav Jain's AI Portfolio API",
         "endpoints": {
             "/api/health": "Health check",
-            "/api/chat": "Chat with AI assistant (POST)"
+            "/api/chat": "Chat with AI assistant (POST)",
+            "/health": "Health check (no prefix)",
+            "/chat": "Chat with AI assistant (POST, no prefix)"
         },
         "rag_enabled": USE_RAG
     }
+
+
+# Health check endpoints
+@app.get("/api/health")
+async def health_check_prefixed():
+    """Check if the API is running (legacy /api prefix)"""
+    return _health_payload()
+
+
+@app.get("/health")
+async def health_check():
+    """Check if the API is running (Vercel function root path)"""
+    return _health_payload()
+
+
+# Main chat endpoints
+@app.post("/api/chat")
+async def chat_prefixed(query: Query):
+    """Support legacy /api/chat path"""
+    return _chat_payload(query.question)
+
+
+@app.post("/chat")
+async def chat(query: Query):
+    """Primary chat endpoint for Vercel function root path"""
+    return _chat_payload(query.question)
+
+
+# Root endpoints for Vercel and local usage
+@app.get("/api")
+async def root_prefixed():
+    """Root endpoint with /api prefix"""
+    return _root_payload()
+
+
+@app.get("/")
+async def root():
+    """Root endpoint at function base path"""
+    return _root_payload()
 
 # Vercel serverless function handler
 handler = app
