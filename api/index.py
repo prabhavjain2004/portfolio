@@ -155,22 +155,46 @@ def _health_payload() -> dict:
 
 def _chat_payload(question: str) -> dict:
     try:
+        print(f"\n=== Processing chat request ===")
+        print(f"Question: {question}")
+        print(f"USE_RAG: {USE_RAG}")
+        
+        if not question or question.strip() == "":
+            return {
+                "answer": "Please provide a valid question.",
+                "status": "error"
+            }
+        
         if USE_RAG:
             try:
+                print("Using RAG system...")
                 answer = process_query(question)
+                print(f"RAG answer: {answer}")
             except Exception as rag_error:
                 # Log and fall back when RAG wiring is incomplete in prod
-                print(f"RAG error: {rag_error}. Falling back to mock responses.")
+                import traceback
+                print(f"RAG error: {rag_error}")
+                print(traceback.format_exc())
+                print("Falling back to mock responses...")
                 answer = mock_process_query(question)
         else:
+            print("Using mock responses...")
             answer = mock_process_query(question)
 
+        if not answer or answer.strip() == "":
+            print("WARNING: Empty answer generated")
+            answer = "I apologize, but I couldn't generate a proper answer. Could you try rephrasing your question?"
+
+        print(f"Final answer: {answer[:100]}...")
         return {
             "answer": answer,
             "status": "success",
             "mode": "rag" if USE_RAG else "mock"
         }
     except Exception as e:
+        import traceback
+        print(f"ERROR in _chat_payload: {e}")
+        print(traceback.format_exc())
         return {
             "answer": "I apologize, but I'm having trouble processing your question right now. Please try again or check out the traditional portfolio page.",
             "status": "error",

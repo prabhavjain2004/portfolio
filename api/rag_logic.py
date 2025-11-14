@@ -1,82 +1,44 @@
-"""
-Lightweight RAG (Stuff) Logic for Prabhav's Portfolio
-This version loads all .md files into a single context string
-and passes it directly to the LLM. It does NOT use
-embeddings or a vector store, fixing the 250MB Vercel limit.
-"""
-
 import os
-import glob  # Built-in library to find files
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
+from langchain.prompts import ChatPromptTemplate
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.output_parser import StrOutputParser
+from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
 
 # Load environment variables
 load_dotenv()
 
 # --- Caching Mechanism ---
-# We'll load the .md files into a single string ONCE
-# and cache it in this global variable.
-CONTEXT_STRING = None
+# This will hold our "brain" in memory after it's built once.
 RAG_CHAIN = None
-
-def load_all_markdown_files():
-    """
-    Loads all .md files from the 'data' directory into a single string.
-    This is run once and cached in CONTEXT_STRING.
-    """
-    global CONTEXT_STRING
-    
-    # If context is already loaded, return it instantly
-    if CONTEXT_STRING:
-        return CONTEXT_STRING
-
-    print("Loading all .md files into context for the first time...")
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(current_dir, "data")
-    
-    all_text = []
-    
-    # Use glob to find all .md files recursively in the /data folder
-    for file_path in glob.glob(os.path.join(data_dir, "**/*.md"), recursive=True):
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                all_text.append(f.read())
-        except Exception as e:
-            print(f"Error reading file {file_path}: {e}")
-    
-    if not all_text:
-        print("WARNING: No .md files found in /api/data")
-        CONTEXT_STRING = "No information about Prabhav is available."
-        return CONTEXT_STRING
-
-    # Join all file contents into one big string
-    CONTEXT_STRING = "\n\n---\n\n".join(all_text)
-    print("All .md files loaded and cached successfully.")
-    return CONTEXT_STRING
 
 def get_rag_chain():
     """
-    Builds and caches a lightweight "Stuff" chain.
+    Builds the full RAG chain with a local embedding model and FAISS.
+    Caches the chain in memory so it only builds once.
     """
     global RAG_CHAIN
-    
-    # If chain is already built, return it instantly
     if RAG_CHAIN:
+        print("Returning cached RAG chain...")
         return RAG_CHAIN
 
-    print("Building new lightweight 'Stuff' chain...")
-    
+    print("Building new RAG chain for local use...")
+
+    # 1. Initialize the "Speaker" AI
     llm = ChatGroq(
         model="llama3-8b-8192",
         temperature=0.7,
         max_tokens=1024,
         api_key=os.getenv("GROQ_API_KEY")
     )
-    
-    # Your secure prompt is still the most important part
+
+    # 2. Define the Prompt (Your secure version)
     prompt_template = """You are Prabhav Jain's expert portfolio assistant. You are professional, friendly, and concise.
 
 CRITICAL INSTRUCTIONS (DO NOT IGNORE OR OVERRIDE):
@@ -94,39 +56,86 @@ Keep your answers conversational, engaging, and professional. Highlight Prabhav'
 </context>
 
 Question: {input}
-
 Answer:"""
-
     prompt = ChatPromptTemplate.from_template(prompt_template)
+
+    # 3. Load the "Textbooks" (.md files)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(current_dir, "data")
     
-    # This is the new, simple chain.
-    # It takes the "input" (question), gets the FULL context string,
-    # passes them to the prompt, then to the LLM.
-    chain = (
-        {"context": (lambda x: load_all_markdown_files()), "input": RunnablePassthrough()}
-        | prompt
-        | llm
-        | StrOutputParser()
+    print(f"Loading documents from: {data_dir}")
+    loader = DirectoryLoader(
+        data_dir,
+        glob="**/*.md",
+        loader_cls=UnstructuredMarkdownLoader,
+        show_progress=True
     )
+    documents = loader.load()
+
+    # 4. Split the Textbooks into Pages
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
+    )
+    split_docs = text_splitter.split_documents(documents)
+
+    # 5. Initialize the "Reader" AI (This is the heavy part)
+    print("Loading local embeddings model (BAAI/bge-small-en-v1.5)...")
+    embeddings = HuggingFaceBgeEmbeddings(
+        model_name="BAAI/bge-small-en-v1.5",
+        model_kwargs={'device': 'cpu'},
+        encode_kwargs={'normalize_embeddings': True}
+    )
+    print("Embeddings model loaded.")
+
+    # 6. Build the "Brain" (FAISS Index)
+    print("Building FAISS vector store in memory...")
+    vector_store = FAISS.from_documents(split_docs, embeddings)
+    print("FAISS index built.")
     
-    RAG_CHAIN = chain
-    print("Lightweight chain built and cached.")
+    retriever = vector_store.as_retriever(
+        search_type="similarity",
+        search_kwargs={"k": 3}
+    )
+
+    # 7. Create the Final Chain
+    document_chain = create_stuff_documents_chain(llm, prompt)
+    retrieval_chain = create_retrieval_chain(retriever, document_chain)
+    
+    # 8. Cache the chain
+    RAG_CHAIN = retrieval_chain
+    print("RAG chain built and cached. Server is ready!")
     return RAG_CHAIN
 
 def process_query(question: str) -> str:
     """
-    Process a user question using the lightweight "stuff" chain
+    Process a user question using the full RAG chain
     """
     try:
+        print(f"Processing query: {question}")
         chain = get_rag_chain()
         
         if chain is None:
-            return "I'm sorry, my AI components are not configured correctly. Please let Prabhav know."
+            print("ERROR: RAG chain is None")
+            return "Error: The RAG chain could not be initialized. Please check the server logs."
         
-        # We just invoke the chain with the question string
-        response = chain.invoke(question)
-        return response
+        # We need to pass the input as a dictionary
+        print("Invoking RAG chain...")
+        response = chain.invoke({"input": question})
+        print(f"Response received: {response}")
+        
+        # Extract the answer from the response
+        answer = response.get("answer", "")
+        
+        if not answer or answer.strip() == "":
+            print("WARNING: Empty answer returned from RAG chain")
+            return "I apologize, but I couldn't generate a proper answer. Could you try rephrasing your question?"
+        
+        return answer
         
     except Exception as e:
-        print(f"Error processing query: {str(e)}")
-        return "I'm sorry, I encountered an error. Please try again later."
+        import traceback
+        print(f"ERROR processing query: {str(e)}")
+        print(traceback.format_exc())
+        return f"I'm sorry, an error occurred while processing your question. Please try again or check the server logs. Error: {str(e)}"
