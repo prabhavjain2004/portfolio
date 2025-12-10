@@ -1,27 +1,32 @@
 import os
 import psutil
 from dotenv import load_dotenv
-
-def get_memory_usage():
-    """Get current memory usage in MB"""
-    process = psutil.Process(os.getpid())
-    memory_mb = process.memory_info().rss / 1024 / 1024
-    return memory_mb
 from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.schema.output_parser import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+
+# Try to import HuggingFace embeddings (prefer API version for memory efficiency)
 try:
     from langchain_huggingface import HuggingFaceEndpointEmbeddings
     USE_HF_API = True
 except ImportError:
     from langchain_community.embeddings import HuggingFaceHubEmbeddings
     USE_HF_API = False
-from langchain_community.vectorstores import FAISS
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+
+def get_memory_usage():
+    """Get current memory usage in MB"""
+    try:
+        process = psutil.Process(os.getpid())
+        memory_mb = process.memory_info().rss / 1024 / 1024
+        return memory_mb
+    except:
+        return 0.0  # Fallback if psutil fails
 
 # Load environment variables
 load_dotenv()
@@ -46,7 +51,7 @@ def get_rag_chain():
 
     # 1. Initialize the "Speaker" AI
     llm = ChatGroq(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",  # Updated to current model
         temperature=0.7,
         max_tokens=1024,
         api_key=os.getenv("GROQ_API_KEY")

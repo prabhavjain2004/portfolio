@@ -10,6 +10,7 @@ langchain
 langchain-huggingface
 requests==2.31.0
 huggingface-hub
+psutil
 faiss-cpu
 unstructured[md]
 # Removed sentence-transformers and torch to reduce memory usage
