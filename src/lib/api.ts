@@ -1,4 +1,6 @@
 // Client-side API utility to communicate with the FastAPI backend
+// CRITICAL: Read the public environment variable set on Vercel
+const API_BASE_URL = process.env.NEXT_PUBLIC_RAG_API_URL;
 
 /**
  * Response interface from the chat API
@@ -14,11 +16,18 @@ interface ChatResponse {
  */
 export async function askAI(question: string): Promise<string> {
   try {
+    // 1. Check for API Base URL Configuration
+    if (!API_BASE_URL) {
+      // In production, this error guides the developer to set the ENV var
+      throw new Error('RAG API URL is not configured. Please set NEXT_PUBLIC_RAG_API_URL.');
+    }
+
     // Create an AbortController for timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-    const response = await fetch('/api/chat', {
+    // 2. Use the absolute external URL provided by the environment variable
+    const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
