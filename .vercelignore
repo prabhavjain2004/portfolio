@@ -1,6 +1,12 @@
+# Python files (API is deployed separately on Render)
+api/
 __pycache__
 *.pyc
 .env
 .env.local
+venv/
+.venv/
+
+# Local development files
 node_modules
 .next
