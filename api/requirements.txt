@@ -10,4 +10,3 @@ langchain
 requests
 huggingface-hub
 faiss-cpu
-unstructured[md]
