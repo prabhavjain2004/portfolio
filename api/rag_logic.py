@@ -6,7 +6,7 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceHubEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -80,11 +80,10 @@ Answer:"""
     )
     split_docs = text_splitter.split_documents(documents)
 
-    # 5. Initialize the "Reader" AI (Using Hugging Face Inference API)
-    print("Loading Hugging Face Hub embeddings model (sentence-transformers/all-MiniLM-L6-v2)...")
-    embeddings = HuggingFaceHubEmbeddings(
-        repo_id="sentence-transformers/all-MiniLM-L6-v2",
-        huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
+    # 5. Initialize the "Reader" AI (Using local sentence-transformers)
+    print("Loading HuggingFace embeddings model (sentence-transformers/all-MiniLM-L6-v2)...")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
     print("Embeddings model loaded.")
 
