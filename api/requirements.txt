@@ -7,7 +7,7 @@ langchain-core==1.0.3
 langchain-community
 langchain-text-splitters
 langchain
-requests==2.31.0
+requests
 huggingface-hub
 faiss-cpu
 unstructured[md]
