@@ -1,0 +1,8 @@
+Vercel Debug Info:
+- Next.js version: 15.5.7 (in package.json dependencies)
+- Node.js version: 20.x (specified in engines)
+- Framework: Next.js (specified in vercel.json)
+- Build command: npm run vercel-build
+- Install command: npm ci --prefer-offline --no-audit
+
+This file confirms the project structure is correct for Vercel deployment.
