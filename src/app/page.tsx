@@ -32,7 +32,7 @@ export default function Home() {
     try {
       const answer = await askAI(query);
       setResponse(answer);
-    } catch (error) {
+    } catch {
       setResponse("Sorry, something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

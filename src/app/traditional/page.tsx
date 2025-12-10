@@ -48,7 +48,7 @@ export default function TraditionalPortfolio() {
               <h3 className="text-xl font-semibold">Swadeshi Prompt Builder</h3>
               <p className="text-gray-700">
                 Freemium web application helping users build high-quality prompts for AI models, 
-                featuring "Janata" (free) and "Maharaja" (pro) tiers.
+                featuring &quot;Janata&quot; (free) and &quot;Maharaja&quot; (pro) tiers.
               </p>
             </div>
           </div>
