@@ -12,7 +12,7 @@ export async function askAI(question: string): Promise<string> {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // Increased to 60 seconds for first request
 
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',

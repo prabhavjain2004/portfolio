@@ -10,7 +10,7 @@ import os
 
 # Try to import RAG logic, fall back to mock if dependencies not installed
 try:
-    from rag_logic import process_query
+    from rag_logic import process_query, get_rag_chain
     USE_RAG = True
 except ImportError:
     USE_RAG = False
@@ -202,14 +202,49 @@ def _chat_payload(question: str) -> dict:
         }
 
 
+def _warmup_payload() -> dict:
+    """Warmup the RAG system by initializing it"""
+    try:
+        if USE_RAG:
+            print("Warming up RAG system...")
+            chain = get_rag_chain()
+            if chain:
+                print("RAG system warmed up successfully!")
+                return {
+                    "status": "success",
+                    "message": "RAG system is ready",
+                    "warmed_up": True
+                }
+            else:
+                return {
+                    "status": "error", 
+                    "message": "Failed to initialize RAG system",
+                    "warmed_up": False
+                }
+        else:
+            return {
+                "status": "success",
+                "message": "Using mock responses (RAG not available)",
+                "warmed_up": True
+            }
+    except Exception as e:
+        print(f"Warmup error: {e}")
+        return {
+            "status": "error",
+            "message": f"Warmup failed: {str(e)}",
+            "warmed_up": False
+        }
+
 def _root_payload() -> dict:
     return {
         "message": "Welcome to Prabhav Jain's AI Portfolio API",
         "endpoints": {
             "/api/health": "Health check",
             "/api/chat": "Chat with AI assistant (POST)",
+            "/api/warmup": "Warmup RAG system (GET)",
             "/health": "Health check (no prefix)",
-            "/chat": "Chat with AI assistant (POST, no prefix)"
+            "/chat": "Chat with AI assistant (POST, no prefix)",
+            "/warmup": "Warmup RAG system (GET, no prefix)"
         },
         "rag_enabled": USE_RAG
     }
@@ -252,6 +287,17 @@ async def root_prefixed():
 async def root():
     """Root endpoint at function base path"""
     return _root_payload()
+
+# Warmup endpoints
+@app.get("/api/warmup")
+async def warmup_prefixed():
+    """Warmup RAG system (legacy /api prefix)"""
+    return _warmup_payload()
+
+@app.get("/warmup")
+async def warmup():
+    """Warmup RAG system (no prefix)"""
+    return _warmup_payload()
 
 # Vercel serverless function handler
 handler = app
