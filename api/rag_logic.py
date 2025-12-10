@@ -1,12 +1,24 @@
 import os
+import psutil
 from dotenv import load_dotenv
+
+def get_memory_usage():
+    """Get current memory usage in MB"""
+    process = psutil.Process(os.getpid())
+    memory_mb = process.memory_info().rss / 1024 / 1024
+    return memory_mb
 from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+try:
+    from langchain_huggingface import HuggingFaceEndpointEmbeddings
+    USE_HF_API = True
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceHubEmbeddings
+    USE_HF_API = False
 from langchain_community.vectorstores import FAISS
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -20,15 +32,17 @@ RAG_CHAIN = None
 
 def get_rag_chain():
     """
-    Builds the full RAG chain with a local embedding model and FAISS.
+    Builds the full RAG chain with HuggingFace API embeddings.
     Caches the chain in memory so it only builds once.
+    Memory-optimized for Render's free tier.
     """
     global RAG_CHAIN
     if RAG_CHAIN:
         print("Returning cached RAG chain...")
         return RAG_CHAIN
 
-    print("Building new RAG chain for local use...")
+    print("Building memory-optimized RAG chain...")
+    print(f"Initial memory usage: {get_memory_usage():.1f} MB")
 
     # 1. Initialize the "Speaker" AI
     llm = ChatGroq(
@@ -72,25 +86,60 @@ Answer:"""
     )
     documents = loader.load()
 
-    # 4. Split the Textbooks into Pages
+    # 4. Split the Textbooks into Pages (smaller chunks for memory efficiency)
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
+        chunk_size=600,  # Smaller chunks to reduce memory usage
+        chunk_overlap=100,
         length_function=len
     )
     split_docs = text_splitter.split_documents(documents)
+    print(f"Created {len(split_docs)} document chunks")
 
-    # 5. Initialize the "Reader" AI (Using local sentence-transformers)
-    print("Loading HuggingFace embeddings model (sentence-transformers/all-MiniLM-L6-v2)...")
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
-    print("Embeddings model loaded.")
+    # 5. Initialize the "Reader" AI (Using HuggingFace API - memory efficient)
+    print("Initializing HuggingFace API embeddings (memory efficient)...")
+    
+    hf_token = os.getenv("HUGGINGFACEHUB_API_TOKEN") or os.getenv("HUGGINGFACE_API_KEY")
+    if not hf_token:
+        raise ValueError("HuggingFace API token not found. Please set HUGGINGFACEHUB_API_TOKEN or HUGGINGFACE_API_KEY environment variable.")
+    
+    if USE_HF_API:
+        print("Using HuggingFace Endpoint API (lightweight)...")
+        embeddings = HuggingFaceEndpointEmbeddings(
+            model="sentence-transformers/all-MiniLM-L6-v2",
+            huggingfacehub_api_token=hf_token
+        )
+    else:
+        print("Using HuggingFace Hub API (lightweight)...")
+        embeddings = HuggingFaceHubEmbeddings(
+            repo_id="sentence-transformers/all-MiniLM-L6-v2",
+            huggingfacehub_api_token=hf_token
+        )
+    print("API embeddings initialized (no local model download).")
 
-    # 6. Build the "Brain" (FAISS Index)
-    print("Building FAISS vector store in memory...")
-    vector_store = FAISS.from_documents(split_docs, embeddings)
-    print("FAISS index built.")
+    # 6. Build the "Brain" (FAISS Index) with memory optimization
+    print("Building FAISS vector store with API embeddings...")
+    try:
+        # Process in smaller batches to avoid memory spikes
+        batch_size = 3  # Very small batches for memory efficiency
+        
+        if len(split_docs) <= batch_size:
+            vector_store = FAISS.from_documents(split_docs, embeddings)
+        else:
+            # Create initial store with first batch
+            first_batch = split_docs[:batch_size]
+            vector_store = FAISS.from_documents(first_batch, embeddings)
+            
+            # Add remaining documents in small batches
+            for i in range(batch_size, len(split_docs), batch_size):
+                batch = split_docs[i:i+batch_size]
+                batch_store = FAISS.from_documents(batch, embeddings)
+                vector_store.merge_from(batch_store)
+                print(f"Processed batch {i//batch_size + 1}")
+        
+        print("FAISS index built successfully.")
+    except Exception as e:
+        print(f"Error building FAISS index: {e}")
+        raise
     
     retriever = vector_store.as_retriever(
         search_type="similarity",
@@ -103,7 +152,9 @@ Answer:"""
     
     # 8. Cache the chain
     RAG_CHAIN = retrieval_chain
-    print("RAG chain built and cached. Server is ready!")
+    final_memory = get_memory_usage()
+    print(f"RAG chain built and cached. Final memory usage: {final_memory:.1f} MB")
+    print("Server is ready!")
     return RAG_CHAIN
 
 def process_query(question: str) -> str:
