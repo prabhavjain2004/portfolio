@@ -50,7 +50,7 @@ export default function Hero() {
           </p>
         </div>
         <div className="flex flex-col items-start md:items-end justify-end text-sm font-mono uppercase tracking-widest gap-2">
-          <a href="/Prabhav_Resume.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors pb-1 border-b border-white hover:border-accent text-white">Download CV ↓</a>
+          <a href="/PrabhavResume.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors pb-1 border-b border-white hover:border-accent text-white">Download CV ↓</a>
           <div className="h-2"></div>
           <a href="#projects" className="hover:text-accent transition-colors pb-1 border-b border-transparent hover:border-accent">Index of Work ↗</a>
           <a href="#contact" className="hover:text-accent transition-colors pb-1 border-b border-transparent hover:border-accent">Initiate Contact ↗</a>
