@@ -194,8 +194,13 @@ export default function Projects() {
                       className="bg-[#050505] border border-gray-900 rounded-3xl p-6 md:p-12 overflow-hidden"
                     >
                       <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-12 border-b border-gray-900 pb-2 w-fit">System Architecture</h4>
-                      <div className="w-full">
-                        {getDiagram(selectedProject.id)}
+                      <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
+                        <div className="min-w-[600px]">
+                          {getDiagram(selectedProject.id)}
+                        </div>
+                      </div>
+                      <div className="md:hidden text-[10px] font-mono text-gray-600 mt-4 text-center">
+                        Swipe to explore architecture →
                       </div>
                     </motion.section>
                   )}

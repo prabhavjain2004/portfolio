@@ -20,10 +20,10 @@ export default function Hero() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif text-[15vw] leading-[0.8] tracking-tight text-center relative whitespace-nowrap"
+          className="font-serif text-[18vw] md:text-[15vw] leading-[0.8] tracking-tighter text-center relative"
         >
-          <span className="italic block -ml-[10vw]">PRABHAV</span>
-          <span className="block ml-[10vw]">JAIN</span>
+          <span className="italic block -ml-[5vw] md:-ml-[10vw]">PRABHAV</span>
+          <span className="block ml-[5vw] md:ml-[10vw]">JAIN</span>
         </motion.h1>
 
         {/* Floating Accent Text */}

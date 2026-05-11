@@ -23,6 +23,16 @@ export default function About() {
     });
   };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    setMousePos({
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    });
+  };
+
   return (
     <section id="about" className="py-32 px-6 md:px-12 border-t border-gray-900">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
@@ -31,9 +41,12 @@ export default function About() {
           <div 
             ref={containerRef}
             onMouseMove={handleMouseMove}
+            onTouchMove={handleTouchMove}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className="mb-12 relative w-full aspect-[4/5] md:aspect-video lg:aspect-[3/4] overflow-hidden bg-[#050505] cursor-none"
+            onTouchStart={() => setIsHovering(true)}
+            onTouchEnd={() => setIsHovering(false)}
+            className="mb-12 relative w-full aspect-[4/5] md:aspect-video lg:aspect-[3/4] overflow-hidden bg-[#050505] md:cursor-none rounded-3xl"
           >
             {/* The Grayscale Base */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
