@@ -28,7 +28,7 @@ const Node = ({ x, y, width = 160, height = 50, title, subtitle, color = "var(--
   </g>
 );
 
-export const JTapArchitecture = () => (
+export const AITrainingPlacementArchitecture = () => (
   <svg viewBox="0 0 680 500" className="w-full h-auto font-sans">
     <defs><ArrowHead /></defs>
     

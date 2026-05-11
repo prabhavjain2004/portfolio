@@ -15,11 +15,11 @@ export interface Project {
 
 export const projectsData: Project[] = [
   {
-    id: "j-tap",
-    title: "J-TAP",
+    id: "ai-training-placement",
+    title: "AI Training and Placement",
     year: "2026",
     tagline: "AI agent layer powering placement readiness for 8,000+ university students — risk alerts in under 5 minutes.",
-    problem: "University training & placement cells operate on fragmented tooling — attendance tracked on spreadsheets, assessments on generic platforms with no institutional context, and at-risk students identified only after irreversible damage to their placement readiness. No single system ties syllabus progress, assessment performance, and individual risk signals into one real-time view. J-TAP was built to close that gap for a university with 8,000+ concurrent users.",
+    problem: "University training & placement cells operate on fragmented tooling — attendance tracked on spreadsheets, assessments on generic platforms with no institutional context, and at-risk students identified only after irreversible damage to their placement readiness. No single system ties syllabus progress, assessment performance, and individual risk signals into one real-time view. AI Training and Placement was built to close that gap for a university with 8,000+ concurrent users.",
     approach: "I designed and built the entire AI agent layer — 8 LangGraph agents orchestrated through a Natural Language Query Router that classifies student intent and dispatches to the appropriate specialist agent. I implemented an LLM-as-Judge evaluation loop using Gemini API to score agent output quality before it reaches the student, and integrated Langfuse for full observability across every agent call, trace, and latency event. I also built approximately 50% of the NestJS backend, including the BullMQ job queue pipelines powering background agent execution and the Risk Detection System, which monitors student performance thresholds continuously and fires trainer alerts within 5 minutes of a breach. This was a collaborative university project — I owned the full AI layer and a substantial portion of the backend infrastructure.",
     outcome: "The platform supports 8,000 concurrent users with a sub-300ms API p95 target and sub-4s agent response p95. The Risk Detection System fires proactive alerts within 5 minutes of a student breaching an attendance or assessment threshold. The NL Query Router correctly dispatches to the appropriate agent across the 8-agent surface, with LLM-as-Judge acting as a quality gate on every AI-generated student-facing response.",
     tech: ["LangGraph", "NestJS", "PostgreSQL", "Redis", "BullMQ", "Langfuse", "Gemini API", "TypeScript"],

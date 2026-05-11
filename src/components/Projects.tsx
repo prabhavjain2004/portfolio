@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { projectsData, Project } from "@/lib/projectData";
-import { JTapArchitecture, ResearchArchitecture, InterviewArchitecture } from "./ProjectDiagrams";
+import { AITrainingPlacementArchitecture, ResearchArchitecture, InterviewArchitecture } from "./ProjectDiagrams";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -29,7 +29,7 @@ export default function Projects() {
 
   const getDiagram = (id: string) => {
     switch (id) {
-      case "j-tap": return <JTapArchitecture />;
+      case "ai-training-placement": return <AITrainingPlacementArchitecture />;
       case "research-agent": return <ResearchArchitecture />;
       case "ai-interviewer": return <InterviewArchitecture />;
       default: return null;
@@ -38,7 +38,7 @@ export default function Projects() {
 
   const renderProjectCard = (project: Project, idx: number, baseIdx: number) => {
     const bgColorMap: Record<string, string> = {
-      "j-tap": "#111111",
+      "ai-training-placement": "#111111",
       "limp": "#1a1a1a",
       "tapnex": "#0a0a0a",
       "research-agent": "#222222",
