@@ -2,7 +2,7 @@ const experiences = [
   {
     company: "AegisOps Techlabs",
     role: "Agentic AI Engineer Intern",
-    dates: "Nov 2025 – Apr 2026",
+    dates: "Nov 2025 – May 2026",
     bullets: [
       "Architected LangGraph-based multi-agent workflows end-to-end, owning agent architecture from design to deployment.",
       "Developed Python/FastAPI backend with REST and SSE interfaces enabling real-time agent execution and streaming outputs.",
@@ -13,7 +13,8 @@ const experiences = [
   },
   {
     company: "TapNex (NexGen FC)",
-    role: "AI Engineer Intern",
+    role: "AI Engineer",
+    type: "Intern",
     dates: "Jul 2025 – Nov 2025",
     bullets: [
       "Designed and shipped 4 production platforms (React, Node.js, PostgreSQL) for ticketing, registration, and automated systems.",
@@ -44,7 +45,10 @@ export default function Experience() {
               </div>
               
               <div className="md:col-span-4">
-                <h3 className="text-3xl font-serif text-white mb-2">{exp.company}</h3>
+                <h3 className="text-3xl font-serif text-white mb-2">
+                  {exp.company}
+                  {exp.type && <span className="ml-3 text-[10px] font-mono border border-gray-800 px-2 py-0.5 rounded text-gray-500 uppercase vertical-middle align-middle">Intern</span>}
+                </h3>
                 <h4 className="text-sm font-sans text-gray-400">{exp.role}</h4>
               </div>
               

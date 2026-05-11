@@ -7,15 +7,15 @@ import { AnimatePresence, motion } from "framer-motion";
 const skillCategories = [
   {
     title: "AI & Agents",
-    skills: ["LangGraph", "LangChain", "OpenAI API", "Gemini", "A2A Communication", "FSM", "ReAct Pattern", "Plan-and-Execute", "Tool Calling", "Mem0"]
+    skills: ["LangGraph", "LangChain", "OpenAI API", "Gemini", "A2A Communication", "FSM", "ReAct Pattern", "Plan-and-Execute", "Tool Calling", "Mem0", "Human-in-the-Loop", "LangGraph Checkpointers"]
   },
   {
     title: "Vector & Reliability",
-    skills: ["pgvector", "ChromaDB", "Pinecone", "Langfuse", "LangSmith", "Guardrails", "Retry Logic", "LLM-as-Judge"]
+    skills: ["pgvector", "ChromaDB", "Pinecone", "Langfuse", "LangSmith", "Guardrails", "Retry Logic", "LLM-as-Judge", "OpenMeter"]
   },
   {
     title: "Backend & Infra",
-    skills: ["FastAPI", "NestJS", "Node.js", "Python", "TypeScript", "Docker", "GCP", "PostgreSQL", "Redis", "BullMQ"]
+    skills: ["FastAPI", "NestJS", "Node.js", "Python", "TypeScript", "Docker", "GCP", "PostgreSQL", "Redis", "BullMQ", "Kafka"]
   },
   {
     title: "Frontend",
