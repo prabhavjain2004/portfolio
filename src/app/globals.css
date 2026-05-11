@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent: #FF3E00;
+  --diagram-teal: #14b8a6;
+  --diagram-purple: #8b5cf6;
+  --diagram-amber: #f59e0b;
+  --diagram-coral: #ef4444;
+  --diagram-gray: #6b7280;
+  --diagram-border: #1f2937;
+  --diagram-bg: #000000;
+  --diagram-text: #9ca3af;
+  --diagram-text-bright: #ffffff;
+}
+
 body {
   background-color: #000;
   color: #fff;

@@ -124,83 +124,116 @@ export default function Projects() {
             onClick={() => setSelectedProject(null)}
             className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-6 md:p-12 cursor-zoom-out"
           >
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative bg-[#080808] border border-gray-900 w-full max-w-3xl max-h-full overflow-y-auto rounded-[2rem] p-8 md:p-16 cursor-default scrollbar-hide"
-            >
-              <button 
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-8 right-8 text-gray-500 hover:text-white transition-colors"
+              <motion.div 
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative bg-[#080808] border border-gray-900 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2rem] p-8 md:p-16 cursor-default scrollbar-hide selection:bg-accent selection:text-black"
               >
-                <X size={32} />
-              </button>
+                <button 
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-8 right-8 text-gray-500 hover:text-white transition-colors z-20"
+                >
+                  <X size={32} />
+                </button>
 
-              <div className="font-mono text-xs uppercase tracking-widest text-accent mb-6">
-                {selectedProject.year} — Project Details
-              </div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="font-mono text-xs uppercase tracking-widest text-accent mb-6"
+                >
+                  {selectedProject.year} — Case Study
+                </motion.div>
 
-              <h2 className="text-4xl md:text-6xl font-serif tracking-tight text-white mb-4">
-                {selectedProject.title}
-              </h2>
-              
-              <p className="text-lg md:text-xl text-accent/80 font-mono italic mb-12">
-                {selectedProject.tagline}
-              </p>
+                <motion.h2 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-4xl md:text-6xl font-serif tracking-tight text-white mb-4"
+                >
+                  {selectedProject.title}
+                </motion.h2>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-lg md:text-xl text-accent/80 font-mono italic mb-16 border-l-2 border-accent/20 pl-6 py-2"
+                >
+                  {selectedProject.tagline}
+                </motion.p>
 
-              <div className="grid grid-cols-1 gap-12">
-                <div className="space-y-12">
-                  <section>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4 border-b border-gray-900 pb-2 w-fit">Problem</h4>
-                    <p className="text-gray-300 font-light leading-relaxed">{selectedProject.problem}</p>
-                  </section>
-                  
-                  <section>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4 border-b border-gray-900 pb-2 w-fit">Approach</h4>
-                    <p className="text-gray-300 font-light leading-relaxed">{selectedProject.approach}</p>
-                  </section>
-                  
-                  <section>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4 border-b border-gray-900 pb-2 w-fit">Outcome</h4>
-                    <p className="text-gray-300 font-light leading-relaxed">{selectedProject.outcome}</p>
-                  </section>
+                <div className="grid grid-cols-1 gap-20">
+                  <div className="space-y-16">
+                    {[
+                      { title: "Problem", content: selectedProject.problem },
+                      { title: "Approach", content: selectedProject.approach },
+                      { title: "Outcome", content: selectedProject.outcome }
+                    ].map((section, idx) => (
+                      <motion.section 
+                        key={section.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 + idx * 0.1 }}
+                      >
+                        <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-6 border-b border-gray-900 pb-2 w-fit">{section.title}</h4>
+                        <p className="text-gray-300 font-light leading-relaxed text-lg md:text-xl">{section.content}</p>
+                      </motion.section>
+                    ))}
+                  </div>
+
+                  {selectedProject.hasArchitecture && (
+                    <motion.section 
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.7 }}
+                      className="bg-[#050505] border border-gray-900 rounded-3xl p-6 md:p-12 overflow-hidden"
+                    >
+                      <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-12 border-b border-gray-900 pb-2 w-fit">System Architecture</h4>
+                      <div className="w-full">
+                        {getDiagram(selectedProject.id)}
+                      </div>
+                    </motion.section>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-16 border-t border-gray-900 pt-16">
+                    <motion.section
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-8 border-b border-gray-900 pb-2 w-fit">Tech Stack</h4>
+                      <div className="flex flex-wrap gap-3">
+                        {selectedProject.tech.map((tag, i) => (
+                          <span key={i} className="text-[11px] font-mono text-gray-400 border border-gray-800 px-4 py-2 rounded-full hover:border-accent/30 hover:text-white transition-colors cursor-default bg-gray-900/30">{tag}</span>
+                        ))}
+                      </div>
+                    </motion.section>
+                    
+                    <motion.section
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.9 }}
+                    >
+                      <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-8 border-b border-gray-900 pb-2 w-fit">Impact Metrics</h4>
+                      <ul className="space-y-4">
+                        {selectedProject.metrics.map((metric, i) => (
+                          <li key={i} className="text-sm md:text-base font-light text-gray-400 flex items-start gap-4 group">
+                            <span className="text-accent mt-1.5 w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors shrink-0" />
+                            {metric}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.section>
+                  </div>
                 </div>
-
-                {selectedProject.hasArchitecture && (
-                  <section className="bg-black/50 border border-gray-900 rounded-2xl p-8">
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-8 border-b border-gray-900 pb-2 w-fit">Architecture Visualization</h4>
-                    <div className="w-full">
-                      {getDiagram(selectedProject.id)}
-                    </div>
-                  </section>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <section>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4 border-b border-gray-900 pb-2 w-fit">Tech Stack</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.tech.map((tag, i) => (
-                        <span key={i} className="text-[10px] font-mono text-gray-400 border border-gray-900 px-3 py-1 rounded-full">{tag}</span>
-                      ))}
-                    </div>
-                  </section>
-                  
-                  <section>
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4 border-b border-gray-900 pb-2 w-fit">Key Metrics</h4>
-                    <ul className="space-y-2">
-                      {selectedProject.metrics.map((metric, i) => (
-                        <li key={i} className="text-sm font-light text-gray-400 flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          {metric}
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
