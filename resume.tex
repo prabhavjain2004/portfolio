@@ -1,0 +1,103 @@
+\documentclass[9.5pt,a4paper]{article}
+
+\usepackage[top=0.4in,bottom=0.4in,left=0.5in,right=0.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\pagestyle{empty}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+
+\titleformat{\section}
+  {\normalsize\bfseries}
+  {}
+  {0em}
+  {}[\titlerule]
+
+\titlespacing{\section}{0pt}{6pt}{3pt}
+
+\setlist[itemize]{itemsep=2pt, topsep=2pt, partopsep=0pt, parsep=0pt, leftmargin=14pt}
+
+\begin{document}
+
+% Header
+{\LARGE \textbf{PRABHAV JAIN}}\\[2pt]
+{\large \textbf{AGENTIC AI ENGINEER}}\\[2pt]
+Bengaluru | aadimate2004@gmail.com | +917898575626 |
+\href{https://www.linkedin.com/in/prabhavjain2004}{\underline{LinkedIn}} |
+\href{https://github.com/prabhavjain2004}{\underline{GitHub}}
+
+\section*{SUMMARY}
+AI engineer with hands-on experience shipping multi-agent systems and RAG pipelines in production. Built and deployed an AI Ops platform at AegisOps and currently leading the AI agent layer for a university training platform serving 8,000+ users. Comfortable owning full agent lifecycles --- from architecture decisions to debugging failures in prod.
+
+\section*{SKILLS}
+\begin{itemize}
+\item \textbf{Languages:} Python (asyncio, pytest), JavaScript
+\item \textbf{AI \& Agents:} LangGraph, LangChain, OpenAI API, Gemini, Ollama, RAG Pipelines, Tool Calling, Human-in-the-Loop, Mem0, LangGraph Checkpointers
+\item \textbf{Databases \& Vector Stores:} PostgreSQL, pgvector, ChromaDB, FAISS, Pinecone, Redis, Supabase
+\item \textbf{Observability \& Reliability:} Langfuse, LangSmith, LLM-as-Judge, Retry Logic, Guardrails, Timeout Handling, Failure Recovery
+\item \textbf{Backend \& Infra:} FastAPI, NestJS, Node.js, Flask, Docker, GCP, Vercel, BullMQ, n8n, REST APIs
+\item \textbf{Frontend:} React, Next.js, Tailwind CSS
+\end{itemize}
+
+\section*{PROFESSIONAL EXPERIENCE}
+
+\textbf{Agentic AI Engineer Intern | AegisOps Techlabs Pvt Ltd} \hfill \textit{Nov 2025 -- Apr 2026}
+\begin{itemize}
+\item Built and shipped a multi-agent AI Ops system end-to-end using LangGraph --- designed agent architecture, wrote the FastAPI backend with SSE for real-time streaming, and handled deployment
+\item Built production RAG pipelines with pgvector and OpenAI embeddings; designed a multi-tier memory system (session state, working memory, long-term context) so agents maintained reasoning continuity across long runs
+\item Instrumented the system with Langfuse and OpenMeter; added guardrails, retry logic, and timeout handling to keep agents stable under production load
+\end{itemize}
+
+\vspace{3pt}
+\textbf{AI Engineer | TapNex (NexGen FC) --- Co-founder} \hfill \textit{Jul 2025 -- Nov 2025}
+\begin{itemize}
+\item Designed and shipped 4 platforms (ticketing, registration, hostel meals, gaming caf\'e) for live events as the sole engineer; integrated Razorpay and Cashfree, cutting manual processing overhead by 70\%
+\item Led campus community building as Club Lead at Cognito Club (Jain University) and Fellow at Under 25; held ambassador roles at GeeksforGeeks and BlackBox AI
+\end{itemize}
+
+\section*{CLIENT PROJECTS}
+
+\textbf{AI Training \& Placement Platform | AI Engineer}
+\begin{itemize}
+\item Designed and built the full AI agent layer for an institution-grade platform targeting 8,000+ concurrent users --- 8 specialized agents including a Syllabus Parser, Learning Path Generator, Resume Analyzer, Risk Detection System, and a Natural Language Query Router that dispatches to 3+ downstream agents
+\item Built evaluation workflows across all agents using LLM-as-Judge scoring and task success rate tracking; integrated Langfuse for end-to-end observability; Risk Detection System triggers alerts within 5 minutes of threshold breach with full audit logging
+\item Contributed $\sim$50\% of the NestJS backend (PostgreSQL, Redis, BullMQ) alongside full ownership of the agent layer
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Land Data Intelligence Platform | AI \& Automation Engineer}
+\begin{itemize}
+\item Built Python automation pipelines for notification dispatch, data fetching, and document parsing; designed webhook-triggered workflows for real-time event handling across platform modules
+\end{itemize}
+
+\section*{PERSONAL PROJECTS}
+
+\textbf{Autonomous Research Agent} \hfill
+\href{https://github.com/prabhavjain2004/Autonomous-Research-Execution-Agent}{\underline{GitHub Link}}
+\begin{itemize}
+\item Supervisor agent coordinates specialized workers via state machine transitions and interrupt handling; workers use ReAct reasoning loops with dynamic tool calling to do multi-step retrieval and produce structured output
+\end{itemize}
+
+\vspace{3pt}
+\textbf{AI Interviewer System} \hfill
+\href{https://github.com/prabhavjain2004/ai-interviewer}{\underline{GitHub Link}}
+\begin{itemize}
+\item Stateful LangGraph workflow with session memory --- agent pauses for user input, evaluates responses in context, and generates a structured report with scores, gap analysis, and improvement suggestions from uploaded resume and JD
+\end{itemize}
+
+\end{itemize}
+
+\section*{EDUCATION}
+\textbf{B.Tech CSE (AI \& ML) | Expected Graduation: May 2027}\\
+Jain Deemed-to-be University, Bengaluru --- CGPA: 7.32/10
+
+\end{document}
