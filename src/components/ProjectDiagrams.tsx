@@ -197,3 +197,75 @@ export const InterviewArchitecture = () => (
   </svg>
 );
 
+export const CDASArchitecture = () => (
+  <svg viewBox="0 0 720 520" className="w-full h-auto font-sans">
+    <defs><ArrowHead /></defs>
+    
+    {/* Left Column: Ingestion & Schema Discovery */}
+    <g>
+      <text x="180" y="25" textAnchor="middle" fill="var(--diagram-text-bright)" className="text-[12px] uppercase tracking-widest font-bold font-mono">
+        1. Ingestion & Schema Discovery
+      </text>
+      
+      <Node x="75" y="60" width="210" height="45" title="CSV Dataset" subtitle="Client File Upload" color="var(--diagram-teal)" />
+      <Node x="75" y="140" width="210" height="45" title="5-Stage Cleaning Pipeline" subtitle="Pandas Auto-Imputation" color="var(--diagram-border)" />
+      <Node x="75" y="220" width="210" height="45" title="Jaccard Join Detector" subtitle="Semantic Schema Proposal" color="var(--diagram-purple)" />
+      <Node x="75" y="300" width="210" height="45" title="Tabular Session Store" subtitle="Compact Schema Profiles" color="var(--diagram-border)" />
+
+      {/* Vertical Flow Lines */}
+      <path d="M 180 105 L 180 140" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+      <path d="M 180 185 L 180 220" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+      <path d="M 180 265 L 180 300" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+    </g>
+
+    {/* Divider line */}
+    <line x1="360" y1="40" x2="360" y2="480" stroke="var(--diagram-border)" strokeDasharray="4 4" />
+
+    {/* Right Column: Sandboxed Execution & Synthesis */}
+    <g>
+      <text x="550" y="25" textAnchor="middle" fill="var(--diagram-text-bright)" className="text-[12px] uppercase tracking-widest font-bold font-mono">
+        2. Sandboxed Execution & Synthesis
+      </text>
+      
+      <Node x="445" y="60" width="210" height="45" title="Natural Language Query" subtitle="Next.js Chat UI" color="var(--diagram-teal)" />
+      <Node x="445" y="140" width="210" height="45" title="Context & Memory Assembler" subtitle="Sliding Window (deque)" color="var(--diagram-border)" />
+      <Node x="445" y="220" width="210" height="45" title="Gemini 3.0 Flash" subtitle="Strict Code Generation Only" color="var(--diagram-amber)" />
+      <Node x="445" y="300" width="210" height="45" title="Python Sandbox" subtitle="Isolated Execution Namespace" color="var(--diagram-coral)" />
+
+      {/* Branching outputs */}
+      <Node x="380" y="385" width="155" height="45" title="Plotly Serializer" subtitle="Interactive Chart" color="var(--diagram-teal)" />
+      <Node x="565" y="385" width="155" height="45" title="LLM Synthesis & Guard" subtitle="Conversational Response" color="var(--diagram-amber)" />
+      
+      {/* Final Presentation */}
+      <Node x="445" y="460" width="210" height="45" title="Interactive Chat View" subtitle="Deterministic Presentation" color="var(--diagram-teal)" />
+
+      {/* Vertical Flow Lines */}
+      <path d="M 550 105 L 550 140" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+      <path d="M 550 185 L 550 220" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+      <path d="M 550 265 L 550 300" fill="none" stroke="var(--diagram-gray)" markerEnd="url(#arrowhead)" />
+
+      {/* Sandbox Splitting Flow Lines */}
+      <path d="M 515 345 C 515 365, 457.5 365, 457.5 385" fill="none" stroke="var(--diagram-teal)" markerEnd="url(#arrowhead)" />
+      <text x="475" y="365" textAnchor="end" fill="var(--diagram-teal)" className="text-[8px] font-mono font-bold select-none">IF CHART</text>
+      
+      <path d="M 585 345 C 585 365, 642.5 365, 642.5 385" fill="none" stroke="var(--diagram-amber)" markerEnd="url(#arrowhead)" />
+      <text x="625" y="365" textAnchor="start" fill="var(--diagram-amber)" className="text-[8px] font-mono font-bold select-none">IF TEXT</text>
+
+      {/* Dynamic converged return flow to presentation */}
+      <path d="M 457.5 430 C 457.5 448, 515 448, 515 460" fill="none" stroke="var(--diagram-teal)" markerEnd="url(#arrowhead)" />
+      <text x="470" y="448" textAnchor="end" fill="var(--diagram-teal)" className="text-[8px] font-mono select-none">Plotly JSON</text>
+
+      <path d="M 642.5 430 C 642.5 448, 585 448, 585 460" fill="none" stroke="var(--diagram-amber)" markerEnd="url(#arrowhead)" />
+      <text x="630" y="448" textAnchor="start" fill="var(--diagram-amber)" className="text-[8px] font-mono select-none">Clean Text</text>
+    </g>
+
+    {/* Intersystem Link: Session Schema Injection */}
+    <path d="M 285 322 C 375 322, 355 162, 445 162" fill="none" stroke="var(--diagram-purple)" strokeDasharray="4 4" markerEnd="url(#arrowhead)" />
+    <text x="360" y="240" textAnchor="middle" fill="var(--diagram-purple)" className="text-[9px] font-mono font-bold select-none bg-black px-1">
+      Inject Schema
+    </text>
+  </svg>
+);
+
+
+

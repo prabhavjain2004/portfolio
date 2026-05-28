@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { projectsData, Project } from "@/lib/projectData";
-import { AITrainingPlacementArchitecture, ResearchArchitecture, InterviewArchitecture } from "./ProjectDiagrams";
+import { AITrainingPlacementArchitecture, ResearchArchitecture, InterviewArchitecture, CDASArchitecture } from "./ProjectDiagrams";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -32,6 +32,7 @@ export default function Projects() {
       case "ai-training-placement": return <AITrainingPlacementArchitecture />;
       case "research-agent": return <ResearchArchitecture />;
       case "ai-interviewer": return <InterviewArchitecture />;
+      case "cdas": return <CDASArchitecture />;
       default: return null;
     }
   };
@@ -42,7 +43,8 @@ export default function Projects() {
       "limp": "#1a1a1a",
       "tapnex": "#0a0a0a",
       "research-agent": "#222222",
-      "ai-interviewer": "#161616"
+      "ai-interviewer": "#161616",
+      "cdas": "#0b1528"
     };
 
     return (
@@ -164,6 +166,36 @@ export default function Projects() {
                 >
                   {selectedProject.tagline}
                 </motion.p>
+
+                {(selectedProject.github || selectedProject.live) && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    className="flex flex-wrap gap-4 mb-16 -mt-8"
+                  >
+                    {selectedProject.github && (
+                      <a 
+                        href={selectedProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono uppercase tracking-widest text-accent border border-accent/20 hover:border-accent hover:bg-accent/10 px-6 py-3 rounded-full transition-all duration-300"
+                      >
+                        GitHub Repo ↗
+                      </a>
+                    )}
+                    {selectedProject.live && (
+                      <a 
+                        href={selectedProject.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono uppercase tracking-widest text-white border border-gray-800 hover:border-gray-600 hover:bg-white/5 px-6 py-3 rounded-full transition-all duration-300"
+                      >
+                        Live Demo ↗
+                      </a>
+                    )}
+                  </motion.div>
+                )}
 
                 <div className="grid grid-cols-1 gap-20">
                   <div className="space-y-16">

@@ -11,6 +11,8 @@ export interface Project {
   tech: string[];
   metrics: string[];
   hasArchitecture?: boolean;
+  github?: string;
+  live?: string;
 }
 
 export const projectsData: Project[] = [
@@ -115,5 +117,27 @@ export const projectsData: Project[] = [
       "100% personal project — designed and built entirely by me"
     ],
     hasArchitecture: true
+  },
+  {
+    id: "cdas",
+    title: "CDAS.ai",
+    year: "2026",
+    tagline: "Autonomous 5-stage cleaning, dynamic schema-aware prompt injection, and secure code-execution sandbox for conversational BI.",
+    problem: "Retrieval-Augmented Generation (RAG) is fundamentally designed for unstructured text, making it highly unreliable and mathematically inaccurate when applied to structured, multi-file tabular data. Traditional conversational BI systems suffer from severe LLM hallucinations during arithmetic calculations, struggle with dynamic schema matching, and are bloated by heavy orchestration frameworks (like LangChain) that add latency, introduce dependency risks, and strip away granular control over prompt construction and JSON parsing.",
+    approach: "I designed and built CDAS.ai from the ground up to guarantee 100% mathematical accuracy and secure deterministic execution. I bypassed unstructured RAG entirely in favor of Schema-Aware Prompt Injection—automatically profiling uploaded CSV files (data types, statistical distributions, null ratios, and sample rows) to inject a compact, highly structured context directly into the LLM. Rather than relying on the LLM to perform calculations, the agent is restricted to acting purely as a code author, generating strict Pandas/Plotly code executed within a hardened Python namespace execution sandbox. I avoided heavy orchestration frameworks to integrate directly with the native Google GenAI SDK (Gemini 3.0 Flash), providing precise control over JSON formatting, schema validation, and recovery. To support multi-table queries, I built a hybrid Semantic Relationship Detector combining an LLM schema proposal layer with programmatic validation via Jaccard index overlap checks. For stateful memory, I engineered a highly optimized sliding-window memory system using collections.deque to preserve the last 5 conversation turns in-memory, keeping latency and token costs strictly bounded.",
+    outcome: "CDAS.ai delivers bulletproof mathematical accuracy by executing code rather than hallucinating numerical answers. The 5-stage non-destructive data cleaning pipeline automatically sanitizes raw user datasets, while the hybrid Semantic Relationship Detector dynamically discovers joins without hardcoded databases. The system achieves exceptionally low latency by utilizing direct GenAI SDK calls and an optimized sliding-window memory buffer, keeping conversational BI responsive, safe, and enterprise-ready.",
+    tech: ["Next.js", "FastAPI", "Pandas", "Plotly Express", "Gemini 3.0 Flash", "Docker", "Python", "TypeScript"],
+    metrics: [
+      "Autonomous 5-stage cleaning pipeline (datetime inference, median/mode imputation, IQR outlier flags, normalizations)",
+      "Hybrid Semantic Join Detector: LLM schema proposal + Jaccard index data overlap validation",
+      "100% mathematical accuracy: restrictive Python code generation vs. direct LLM calculation",
+      "Secure Sandbox: restricted Python execution namespace preventing data or server compromise",
+      "Bounded collections.deque Memory: 5-turn sliding window for ultra-low latency & token efficiency",
+      "Schema-Aware Prompt Injection: profiling tabular structures directly into context instead of fragile RAG",
+      "Direct Google GenAI SDK integration: minimal dependency weight, custom JSON parsing, and rapid error recovery"
+    ],
+    hasArchitecture: true,
+    github: "https://github.com/prabhavjain2004/Conversational-Data-Analysis-System"
   }
 ];
+
