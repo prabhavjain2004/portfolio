@@ -6,20 +6,24 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const skillCategories = [
   {
-    title: "AI & Agents",
-    skills: ["LangGraph", "LangChain", "Claude Code", "Google Antigravity", "OpenAI API", "Gemini", "A2A Communication", "FSM", "ReAct Pattern", "Plan-and-Execute", "Tool Calling", "Mem0", "Human-in-the-Loop", "LangGraph Checkpointers"]
+    title: "AI & Agent Orchestration",
+    skills: ["LangGraph", "LangChain", "Multi-Agent Systems", "RAG Pipelines", "Tool Calling", "ReAct Pattern", "Human-in-the-Loop", "Supervisor / Worker", "State-Machine Workflows", "LangGraph Checkpointers", "Multi-Tier Memory", "Claude Code", "Google Antigravity"]
   },
   {
-    title: "Vector & Reliability",
-    skills: ["pgvector", "ChromaDB", "Pinecone", "Langfuse", "LangSmith", "Guardrails", "Retry Logic", "LLM-as-Judge", "OpenMeter"]
+    title: "Evaluation & Reliability",
+    skills: ["LLM-as-Judge", "Task Success Metrics", "Langfuse", "LangSmith", "OpenMeter", "Guardrails", "Retry Logic", "Timeout Handling", "Failure Recovery"]
   },
   {
-    title: "Backend & Infra / Automation",
-    skills: ["FastAPI", "NestJS", "Node.js", "Python", "TypeScript", "Docker", "GCP", "PostgreSQL", "Redis", "BullMQ", "Kafka", "REST APIs", "Google Apps Script"]
+    title: "Data & Vector Stores",
+    skills: ["PostgreSQL", "pgvector", "ChromaDB", "FAISS", "Pinecone", "Redis", "Supabase"]
   },
   {
-    title: "Frontend",
-    skills: ["React", "Next.js", "Tailwind CSS", "Flutter", "Framer Motion"]
+    title: "Backend & Production Infra",
+    skills: ["FastAPI", "NestJS", "Node.js", "Python (asyncio, pytest)", "Docker", "GCP", "Vercel", "BullMQ", "REST APIs", "Webhooks"]
+  },
+  {
+    title: "Frontend & Interfaces",
+    skills: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Flutter"]
   }
 ];
 

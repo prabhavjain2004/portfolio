@@ -3,10 +3,10 @@
 import { useRef, useState } from "react";
 
 const stats = [
+  { value: "8+", label: "Specialized Agents" },
   { value: "8K+", label: "Concurrent Scale" },
-  { value: "70%", label: "Manual Reduction" },
-  { value: "04", label: "Live Platforms" },
-  { value: "02", label: "Industry Engagements" },
+  { value: "<5m", label: "Risk Alert SLA" },
+  { value: "04", label: "Platforms Shipped (Sole Eng)" },
 ];
 
 export default function About() {
@@ -81,11 +81,11 @@ export default function About() {
           <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">Foundation</h2>
           
           <p className="text-3xl md:text-5xl font-serif leading-tight tracking-tight text-white mb-8">
-            I don't just build agents; I build <span className="italic">stable autonomous systems</span> with a focus on observability and production reliability.
+            I don't just build agents; I build <span className="italic">production agentic systems</span> with rigorous evaluation, observability, and failure recovery.
           </p>
           
           <p className="text-lg font-light text-gray-400 font-sans max-w-md mb-12">
-            Currently engineering multi-agent logic at <span className="text-white">AegisOps</span> and architecting scalable AI platforms at <span className="text-white">TapNex</span>.
+            Leading the AI agent layer for a university platform serving <span className="text-white">8,000+ users</span>, engineered multi-agent workflows at <span className="text-white">AegisOps</span>, and shipped 4 platforms end-to-end as sole engineer at <span className="text-white">TapNex</span>.
           </p>
 
           <div className="border-t border-gray-900 pt-12">

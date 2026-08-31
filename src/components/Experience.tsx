@@ -14,13 +14,13 @@ const experiences = [
   {
     company: "AegisOps Techlabs",
     role: "Agentic AI Engineer Intern",
-    dates: "Nov 2025 – May 2026",
+    dates: "Nov 2025 – Apr 2026",
     bullets: [
-      "Architected LangGraph-based multi-agent workflows end-to-end, owning agent architecture from design to deployment.",
-      "Developed Python/FastAPI backend with REST and SSE interfaces enabling real-time agent execution and streaming outputs.",
-      "Implemented production RAG pipelines using pgvector and OpenAI embeddings for multi-step reasoning.",
-      "Designed multi-tier memory architecture (session state, working memory, long-term context) enabling persistent reasoning.",
-      "Instrumented agent observability using Langfuse and OpenMeter; implemented guardrails and retry logic for production reliability."
+      "Built and shipped a multi-agent AI Ops system end-to-end using LangGraph, owning agent architecture from design to production deployment.",
+      "Developed Python/FastAPI backend with Server-Sent Events (SSE) for real-time agent execution and streaming outputs.",
+      "Implemented production RAG pipelines using pgvector and OpenAI embeddings for multi-step contextual reasoning.",
+      "Designed a multi-tier memory architecture (session state → working memory → long-term context) enabling agents to maintain reasoning continuity across long runs.",
+      "Instrumented system observability using Langfuse and OpenMeter; implemented guardrails, retry logic, timeout handling, and failure recovery for production stability."
     ]
   },
   {
@@ -29,9 +29,9 @@ const experiences = [
     type: "Intern",
     dates: "Jul 2025 – Nov 2025",
     bullets: [
-      "Designed and shipped 4 production platforms (React, Node.js, PostgreSQL) for ticketing, registration, and automated systems.",
-      "Served as sole engineer across product scoping, frontend, backend, and deployment.",
-      "Executed Razorpay and Cashfree integrations, resulting in a 70% reduction in manual processing overhead."
+      "Designed and shipped 4 production platforms (ticketing, registration, hostel meals, gaming café) as the sole engineer.",
+      "Owned the complete product lifecycle independently across product scoping, frontend, backend, database design, and deployment.",
+      "Integrated Razorpay and Cashfree payment processing, reducing manual operational overhead by 70%."
     ]
   }
 ];

@@ -197,12 +197,30 @@ export default function Projects() {
                   </motion.div>
                 )}
 
+                {selectedProject.alertCallout && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.38 }}
+                    className="mb-12 p-6 rounded-2xl border border-accent/30 bg-accent/5 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                  >
+                    <span className="text-accent font-mono text-[11px] uppercase tracking-widest px-3 py-1 rounded-full border border-accent/40 shrink-0">
+                      Production SLA
+                    </span>
+                    <p className="text-white font-sans text-sm md:text-base leading-relaxed">
+                      {selectedProject.alertCallout}
+                    </p>
+                  </motion.div>
+                )}
+
                 <div className="grid grid-cols-1 gap-20">
                   <div className="space-y-16">
                     {[
                       { title: "Problem", content: selectedProject.problem },
-                      { title: "Approach", content: selectedProject.approach },
-                      { title: "Outcome", content: selectedProject.outcome }
+                      { title: "Approach & Architecture", content: selectedProject.approach },
+                      ...(selectedProject.evaluation ? [{ title: "Agent Evaluation", content: selectedProject.evaluation }] : []),
+                      ...(selectedProject.observability ? [{ title: "Observability & Reliability", content: selectedProject.observability }] : []),
+                      { title: "Outcome & Scale", content: selectedProject.outcome }
                     ].map((section, idx) => (
                       <motion.section 
                         key={section.title}
@@ -211,7 +229,7 @@ export default function Projects() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.4 + idx * 0.1 }}
                       >
-                        <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 mb-6 border-b border-gray-900 pb-2 w-fit">{section.title}</h4>
+                        <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-accent/80 mb-6 border-b border-gray-900 pb-2 w-fit">{section.title}</h4>
                         <p className="text-gray-300 font-light leading-relaxed text-lg md:text-xl">{section.content}</p>
                       </motion.section>
                     ))}

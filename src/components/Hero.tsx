@@ -46,7 +46,7 @@ export default function Hero() {
       >
         <div className="md:col-span-2">
           <p className="text-xl md:text-2xl font-light text-gray-400 max-w-xl leading-relaxed">
-            I engineer <span className="text-white italic font-serif">reliable autonomous systems</span> that survive real-world production. No demos. Just code that ships.
+            Agentic AI Engineer building <span className="text-white italic font-serif">reliable autonomous systems</span> from architecture to production. No demos. Just code that ships.
           </p>
         </div>
         <div className="flex flex-col items-start md:items-end justify-end text-sm font-mono uppercase tracking-widest gap-2">

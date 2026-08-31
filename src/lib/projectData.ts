@@ -10,6 +10,9 @@ export interface Project {
   outcome: string;
   tech: string[];
   metrics: string[];
+  evaluation?: string;
+  observability?: string;
+  alertCallout?: string;
   hasArchitecture?: boolean;
   github?: string;
   live?: string;
@@ -20,111 +23,101 @@ export const projectsData: Project[] = [
     id: "ai-training-placement",
     title: "AI Training and Placement",
     year: "2026",
-    tagline: "AI agent layer powering placement readiness for 8,000+ university students — risk alerts in under 5 minutes.",
-    problem: "University training & placement cells operate on fragmented tooling — attendance tracked on spreadsheets, assessments on generic platforms with no institutional context, and at-risk students identified only after irreversible damage to their placement readiness. No single system ties syllabus progress, assessment performance, and individual risk signals into one real-time view. AI Training and Placement was built to close that gap for a university with 8,000+ concurrent users.",
-    approach: "I designed and built the entire AI agent layer — 8 LangGraph agents orchestrated through a Natural Language Query Router that classifies student intent and dispatches to the appropriate specialist agent. I implemented an LLM-as-Judge evaluation loop using Gemini API to score agent output quality before it reaches the student, and integrated Langfuse for full observability across every agent call, trace, and latency event. I also built approximately 50% of the NestJS backend, including the BullMQ job queue pipelines powering background agent execution and the Risk Detection System, which monitors student performance thresholds continuously and fires trainer alerts within 5 minutes of a breach. This was a collaborative university project — I owned the full AI layer and a substantial portion of the backend infrastructure.",
-    outcome: "The platform supports 8,000 concurrent users with a sub-300ms API p95 target and sub-4s agent response p95. The Risk Detection System fires proactive alerts within 5 minutes of a student breaching an attendance or assessment threshold. The NL Query Router correctly dispatches to the appropriate agent across the 8-agent surface, with LLM-as-Judge acting as a quality gate on every AI-generated student-facing response.",
+    tagline: "8 specialized agents · 8,000+ users · <5m alert breach",
+    problem: "University training and placement cells operate on fragmented systems — attendance tracked on spreadsheets, assessments on generic platforms with no institutional context, and at-risk students identified too late for intervention. The platform required an institution-grade AI agent layer to unify syllabus progression, personalized practice, resume analysis, and real-time student risk monitoring for 8,000+ concurrent users.",
+    approach: "I designed and built the full AI agent layer comprising 8 specialized agents: Syllabus Parser, Learning Path Generator, Resume Analyzer, Risk Detection System, AI Practice Assistant, Content Curation, Interview Prep, and a Natural Language Query Router that dispatches requests to 3+ downstream agents based on intent. Alongside full ownership of the agent layer, I contributed ~50% of the NestJS backend, engineering PostgreSQL schemas, Redis caching, and BullMQ job queue pipelines powering background agent tasks.",
+    evaluation: "Built evaluation workflows across the agent layer using LLM-as-Judge scoring and task success metrics, making agent behavior measurable rather than relying on subjective outputs.",
+    observability: "Instrumented agent execution with Langfuse for end-to-end observability and full audit logging. Implemented guardrails, retry logic, timeout handling, and failure recovery to keep agents stable under production load.",
+    alertCallout: "Risk Detection System triggers alerts within 5 minutes of threshold breach with full audit logging.",
+    outcome: "Deployed to serve 8,000+ concurrent users with an API p95 target under 300ms and agent response p95 under 4s. The Risk Detection System proactively alerts trainers within 5 minutes of a student breaching an attendance or assessment threshold, and the NL Query Router accurately orchestrates across the 8-agent surface.",
     tech: ["LangGraph", "NestJS", "PostgreSQL", "Redis", "BullMQ", "Langfuse", "Gemini API", "TypeScript"],
     metrics: [
       "8,000+ concurrent users",
-      "Risk Detection System: alerts within 5 minutes of threshold breach",
-      "8 specialized LangGraph agents",
-      "LLM-as-Judge quality gate on every agent output",
-      "API p95 target: < 300ms | Agent response p95: < 4s",
-      "Full distributed tracing via Langfuse"
+      "8 specialized agents orchestrated via NL Query Router",
+      "Risk alerts triggered within 5 minutes of threshold breach",
+      "Evaluation workflows across agents with LLM-as-Judge scoring",
+      "Task success rate tracking & full audit logging",
+      "End-to-end Langfuse observability",
+      "~50% NestJS backend contribution (PostgreSQL, Redis, BullMQ)"
     ],
     hasArchitecture: true
-  },
-  {
-    id: "limp",
-    title: "Land Data Intelligence Platform",
-    year: "2026",
-    tagline: "Python automation pipelines and webhook-driven real-time workflows for a mission-critical land operations platform.",
-    problem: "Large-scale land acquisition operations generate a continuous stream of legal documents, government workflow updates, and field status changes that need to reach the right stakeholders instantly. Manual coordination between advocates, revenue officers, and field surveyors created information lag and legal compliance risk — a missed hearing deadline or late document upload can have serious consequences. The platform needed automated pipelines that react to operational events without human intervention.",
-    approach: "I built the Python automation layer — specifically the Celery-backed pipelines responsible for notification dispatch (WhatsApp + SMS triggers for task assignments, hearing compliance deadlines, and overdue escalations with a 3-attempt retry at 15-minute intervals), document parsing workflows that extract and classify structured data from uploaded legal and revenue documents, and external data fetching routines that keep operational state synchronized. I built the webhook-triggered real-time workflows that fire on field events — document uploads, task overdue events, and compliance deadline breaches all propagate automatically. Event streams are routed through Kafka for ordered, replayable processing, with Cassandra absorbing the high-volume audit log — an append-only, non-deletable record required for legal compliance. This was a client engagement; I was a key contributor to the backend automation and pipeline layer.",
-    outcome: "Notification dispatch fires automatically within 2 minutes of a trigger event. Document parsing pipelines eliminated manual data entry for the most frequent legal and revenue document types. The Kafka + Cassandra audit pipeline provides a durable, replayable event record across all operational activity — compliant with the no-hard-delete requirement enforced across the platform.",
-    tech: ["Python", "Django", "PostgreSQL", "Redis", "Celery", "AWS S3", "Kafka", "Cassandra"],
-    metrics: [
-      "Notification dispatch within 2 minutes of trigger event",
-      "3-attempt retry with 15-minute intervals and delivery status logging",
-      "Kafka-backed event streams: ordered, replayable, zero data loss",
-      "Cassandra audit log: append-only, high-volume durability",
-      "Webhook-triggered workflows: zero manual intervention required",
-      "8 role types with row-level access enforcement at API layer"
-    ]
   },
   {
     id: "tapnex",
     title: "TapNex",
     year: "2025",
-    tagline: "Four event tech platforms. One engineer. Zero manual bottlenecks.",
-    problem: "Large-scale college events spanning ticketing, hostel meal allocation, gaming café access, and on-site registration are typically managed through disconnected manual systems. Check-in queues form, meal counts drift, gaming café slots get double-booked, and event staff spend the entire day firefighting coordination failures rather than running the event.",
-    approach: "I designed and built all four platforms end-to-end as the sole engineer: a QR-based ticketing platform with entry validation, an on-site registration system, a hostel meal allocation tracker with real-time counts, and a gaming café slot booking system. I integrated both Razorpay and Cashfree for payment processing — covering the full payment lifecycle from checkout initiation to webhook-confirmed settlement. The entire stack runs on NestJS + Supabase with Flutter frontends, built and deployed by me independently.",
-    outcome: "The four platforms collectively reduced manual event overhead by 70% compared to the prior manual process. Both Razorpay and Cashfree payment gateways processed successfully. QR-based entry eliminated queue buildup at check-in points, and real-time tracking dashboards gave event staff live operational visibility for the first time.",
-    tech: ["Flutter", "NestJS", "Supabase", "PostgreSQL", "Razorpay", "Cashfree"],
+    tagline: "Four production platforms shipped as sole engineer · 70% manual reduction",
+    problem: "Live campus events spanning ticketing, hostel meal allocation, gaming café reservations, and on-site registration suffered from disconnected manual operations, causing queue buildup, meal count drift, and double-booked facilities.",
+    approach: "Designed and shipped 4 production platforms (ticketing, registration, hostel meals, and gaming café) as the sole engineer. Led product scoping, frontend implementation, backend services, database design, and deployment. Integrated Razorpay and Cashfree payment gateways for complete payment processing.",
+    outcome: "The 4 platforms collectively reduced manual processing overhead by 70%. Successfully eliminated check-in queues through QR entry validation with real-time deduplication and delivered live tracking dashboards for event organizers.",
+    tech: ["React", "Node.js", "NestJS", "PostgreSQL", "Supabase", "Razorpay", "Cashfree"],
     metrics: [
-      "70% reduction in manual event overhead",
-      "4 live platforms built as sole engineer",
-      "Dual payment gateway integration (Razorpay + Cashfree)",
-      "QR-based entry validation with real-time deduplication",
-      "Live meal and slot tracking dashboards"
+      "4 production platforms shipped as sole engineer",
+      "70% reduction in manual processing overhead",
+      "Dual payment integration: Razorpay + Cashfree",
+      "Sole engineering across scoping, frontend, backend & deployment"
+    ]
+  },
+  {
+    id: "limp",
+    title: "Land Data Intelligence Platform",
+    year: "2026",
+    tagline: "Python automation pipelines and webhook-triggered workflows for real-time event handling.",
+    problem: "Large-scale land documentation and compliance workflows involve continuous document uploads, hearing deadlines, and status updates that require reliable automated pipelines across platform modules without manual coordination delay.",
+    approach: "Built Python automation pipelines for notification dispatch, data fetching, and legal/revenue document parsing. Designed webhook-triggered workflows for real-time event handling across platform modules, ensuring reliable data synchronization and delivery status logging.",
+    outcome: "Automated notification dispatch and document processing workflows eliminated manual data entry, enabling instant event propagation across platform modules with full delivery tracking.",
+    tech: ["Python", "Django", "PostgreSQL", "Redis", "Celery", "REST APIs", "Webhooks"],
+    metrics: [
+      "Python automation pipelines for notification dispatch & data fetching",
+      "Webhook-triggered workflows for real-time event handling",
+      "Automated document parsing pipelines for structured data extraction"
     ]
   },
   {
     id: "research-agent",
     title: "Autonomous Research Execution Agent",
     year: "2025",
-    tagline: "A self-evaluating research system that replans before it hallucinates.",
-    problem: "General-purpose LLMs answer confidently regardless of evidence quality — there's no feedback mechanism to catch weak research before it becomes output. For synthesis tasks requiring web search, pattern recognition, and strategic recommendations, a single LLM call is architecturally fragile. The challenge was building a system that orchestrates specialized agents, rigorously evaluates its own output, and triggers replanning automatically when confidence falls below threshold — without human intervention.",
-    approach: "I built a boss-worker multi-agent system with a BossAgent orchestrating three specialized workers: ResearchAgent (Tavily primary search with DuckDuckGo + Google fallback, and a scraping cascade through BeautifulSoup → Playwright), AnalystAgent (pattern recognition + LLM insights), and StrategyAgent (recommendations + action plan). The system runs on a 9-state StateMachine (IDLE → PLANNING → TOOL_EXECUTION → OBSERVATION → REFLECTION → CONFIDENCE_EVALUATION → REPLANNING → ERROR_RECOVERY → COMPLETE). Confidence scoring is dual-layer: each worker self-scores its output, and the BossAgent independently evaluates it via a separate LLM call using Gemma 3-12B; the system uses the lower of the two as the operative score (conservative, default threshold: 0.70). If confidence is below threshold, the FSM enters REPLANNING and retries up to N times (default: 3); critically low scores trigger ERROR_RECOVERY. A ReflectionModule handles the evaluate_output logic with configurable high/low thresholds. SQLite-backed MemorySystem persists sessions, decisions, confidence scores, and tool outputs across runs. ModelRouter routes to four OpenRouter free-tier models by task complexity (SIMPLE → Gemma 3-4B, MODERATE → Gemma 3-4B, COMPLEX → Qwen 3-4B or Gemma 3-12B, LONG_CONTEXT → Llama 3.2-3B). Real-time WebSocket UI streams live logs, confidence scores, and session history.",
-    outcome: "The conservative dual-scoring approach catches overconfident agent outputs the worker itself wouldn't flag — because the BossAgent evaluates independently. The REPLANNING loop means output quality improves across retries rather than returning stale results. MemorySystem SQLite persistence allows sessions to be resumed, audited, and compared. OpenRouter free-tier routing keeps the system zero-cost while dynamically allocating stronger models for complex reasoning tasks.",
-    tech: ["LangGraph", "FastAPI", "OpenRouter", "SQLite", "WebSockets", "Python", "Tavily API", "BeautifulSoup", "Playwright"],
+    tagline: "Supervisor agent coordinating specialized workers via state-machine transitions and ReAct loops.",
+    problem: "Single-prompt LLM research workflows produce unchecked outputs and lack structured coordination for multi-step information gathering. Building an autonomous research system requires orchestrating specialized roles, managing state transitions, and handling interrupts during long runs.",
+    approach: "Designed a hierarchical multi-agent system where a Supervisor Agent coordinates specialized worker agents through state-machine transitions and interrupt handling. Specialized workers execute ReAct reasoning loops with dynamic tool calling for multi-step retrieval and structured output generation.",
+    evaluation: "Implemented context-aware evaluation and reflection steps across worker agents to verify research consistency before producing final structured reports.",
+    outcome: "Demonstrated controlled task delegation between supervisor and specialized workers with state-machine stability. Dynamic tool calling and ReAct loops reliably execute multi-step retrieval and produce structured synthesis without losing conversational state.",
+    tech: ["LangGraph", "FastAPI", "Python", "WebSockets", "RAG Pipelines", "Tool Calling"],
     metrics: [
-      "Dual confidence scoring: worker self-score ∩ BossAgent LLM score",
-      "Default confidence threshold: 0.70",
-      "9-state FSM with automated replanning on low confidence",
-      "Max 3 retries before ERROR_RECOVERY",
-      "3 specialized worker agents (Research, Analyst, Strategy)",
-      "Search cascade: Tavily (primary) → DuckDuckGo → Google",
-      "Scraping: BeautifulSoup → Playwright cascade",
-      "4-model OpenRouter routing: Qwen 3-4B / Gemma 3-12B / Llama 3.2-3B / Gemma 3-4B",
-      "SQLite session persistence across research runs",
-      "Real-time WebSocket UI with live confidence visualization",
-      "100% personal project — designed and built entirely by me"
+      "Supervisor agent coordinating specialized workers",
+      "State-machine transitions & interrupt handling",
+      "ReAct reasoning loops with dynamic tool calling",
+      "Multi-step retrieval with structured output generation"
     ],
-    hasArchitecture: true
+    hasArchitecture: true,
+    github: "https://github.com/prabhavjain2004/Autonomous-Research-Execution-Agent"
   },
   {
     id: "ai-interviewer",
     title: "AI Interviewer System",
     year: "2025",
-    tagline: "Real-time voice interviews with a zero-LLM auditor and STAR coaching — three agents that never block each other.",
-    problem: "Existing AI interview tools are either turn-based with noticeable latency, or evaluate performance only after the session — too late for candidates to understand in real time what's going wrong. The deeper problem: resume claims are rarely stress-tested. Interviewers ask generic questions that let candidates give vague answers without exposing articulation gaps between what the resume says and what they can actually explain under pressure. A real system needs parallel real-time evaluation that doesn't impact the live conversation.",
-    approach: "I built a 3-agent system with strict separation enforced in code. Agent 1: LiveInterviewer (Gemini 2.5 Flash Native Audio Live) conducts the voice interview via WebSocket. Agent 2: AuditorAgent — zero LLM calls, pure Python heuristics, runs as asyncio.create_task() so it never blocks the audio path. It scores every student turn: hesitation, tech clarity, metrics, and red flags. Agent 3: CoachAgent (Gemini 2.5 Flash) runs as a FastAPI BackgroundTask only after finished — it generates a CoachReport with MirrorResult (resume vs answer consistency) and EliteScript (STAR) rewrites. Session state in Redis (Upstash) with 24hr TTL; ChromaDB for resume RAG.",
-    outcome: "AuditorAgent runs at zero LLM cost during the live interview — pure heuristics means no API latency on the conversation path. Resume entity grounding makes every substantive question target something specific on the resume, making vague answers structurally impossible to hide behind. The MirrorEngine catches articulation gaps with enough specificity to produce an EliteScript the candidate can actually memorize.",
-    tech: ["LangGraph", "FastAPI", "Gemini 2.5 Flash Live", "Redis (Upstash)", "ChromaDB", "WebSockets", "Python", "asyncio"],
+    tagline: "Stateful LangGraph workflow with session memory and context-aware candidate evaluation.",
+    problem: "Standard interview preparation tools ask generic questions without grounding candidate answers against their specific resume claims, missing articulation gaps between what resumes claim and what candidates can explain under pressure.",
+    approach: "Built a stateful LangGraph workflow with session memory and interrupt handling where the agent pauses for user input, evaluates candidate responses in context, and resumes with full conversational continuity. Dynamically generates role-specific questions from uploaded resume and JD context.",
+    evaluation: "Evaluates candidate responses in real-time context and generates structured reports with scores, gap analysis, and targeted improvement suggestions.",
+    outcome: "Delivers conversational continuity across interview phases with resume and JD entity grounding. Generates actionable feedback reports highlighting articulation gaps and strengths.",
+    tech: ["LangGraph", "FastAPI", "Python", "Redis", "ChromaDB", "WebSockets", "asyncio"],
     metrics: [
-      "Real-time voice: WebSocket audio streaming, 16kHz PCM mono",
-      "AuditorAgent: zero LLM calls, zero latency impact",
-      "4-phase interview FSM: warm_up → deep_dive → stress_test → finished",
-      "Progressive difficulty: EASY → MEDIUM → CHALLENGING",
-      "Every deep_dive + stress_test question grounded to a resume entity",
-      "6 real-time AuditorNote signals per turn",
-      "Red flag detection: vague ownership, passive voice, missing metrics",
-      "MirrorResult: resume_claim vs student_said consistency",
-      "EliteScript: 50–100 words, STAR structure, verified metric",
-      "Coach runs as FastAPI BackgroundTask — never blocks session",
-      "100% personal project — designed and built entirely by me"
+      "Stateful LangGraph workflow with session memory",
+      "Interrupt handling: agent pauses for user response & resumes",
+      "Dynamic question generation grounded in resume & JD context",
+      "Structured reports with scores, gap analysis & improvement recommendations"
     ],
-    hasArchitecture: true
+    hasArchitecture: true,
+    github: "https://github.com/prabhavjain2004/ai-interviewer"
   },
   {
     id: "cdas",
     title: "CDAS.ai",
     year: "2026",
     tagline: "Autonomous 5-stage cleaning, dynamic schema-aware prompt injection, and secure code-execution sandbox for conversational BI.",
-    problem: "Retrieval-Augmented Generation (RAG) is fundamentally designed for unstructured text, making it highly unreliable and mathematically inaccurate when applied to structured, multi-file tabular data. Traditional conversational BI systems suffer from severe LLM hallucinations during arithmetic calculations, struggle with dynamic schema matching, and are bloated by heavy orchestration frameworks (like LangChain) that add latency, introduce dependency risks, and strip away granular control over prompt construction and JSON parsing.",
-    approach: "I designed and built CDAS.ai from the ground up to guarantee 100% mathematical accuracy and secure deterministic execution. I bypassed unstructured RAG entirely in favor of Schema-Aware Prompt Injection—automatically profiling uploaded CSV files (data types, statistical distributions, null ratios, and sample rows) to inject a compact, highly structured context directly into the LLM. Rather than relying on the LLM to perform calculations, the agent is restricted to acting purely as a code author, generating strict Pandas/Plotly code executed within a hardened Python namespace execution sandbox. I avoided heavy orchestration frameworks to integrate directly with the native Google GenAI SDK (Gemini 3.0 Flash), providing precise control over JSON formatting, schema validation, and recovery. To support multi-table queries, I built a hybrid Semantic Relationship Detector combining an LLM schema proposal layer with programmatic validation via Jaccard index overlap checks. For stateful memory, I engineered a highly optimized sliding-window memory system using collections.deque to preserve the last 5 conversation turns in-memory, keeping latency and token costs strictly bounded.",
+    problem: "Retrieval-Augmented Generation (RAG) is fundamentally designed for unstructured text, making it highly unreliable and mathematically inaccurate when applied to structured, multi-file tabular data. Traditional conversational BI systems suffer from severe LLM hallucinations during arithmetic calculations, struggle with dynamic schema matching, and are bloated by heavy orchestration frameworks that add latency, introduce dependency risks, and strip away granular control over prompt construction and JSON parsing.",
+    approach: "I designed and built CDAS.ai from the ground up to guarantee 100% mathematical accuracy and secure deterministic execution. I bypassed unstructured RAG entirely in favor of Schema-Aware Prompt Injection—automatically profiling uploaded CSV files (data types, statistical distributions, null ratios, and sample rows) to inject a compact, highly structured context directly into the LLM. Rather than relying on the LLM to perform calculations, the agent is restricted to acting purely as a code author, generating strict Pandas/Plotly code executed within a hardened Python namespace execution sandbox. I integrated directly with the native Google GenAI SDK (Gemini 3.0 Flash), providing precise control over JSON formatting, schema validation, and recovery. To support multi-table queries, I built a hybrid Semantic Relationship Detector combining an LLM schema proposal layer with programmatic validation via Jaccard index overlap checks. For stateful memory, I engineered a highly optimized sliding-window memory system using collections.deque to preserve the last 5 conversation turns in-memory, keeping latency and token costs strictly bounded.",
     outcome: "CDAS.ai delivers bulletproof mathematical accuracy by executing code rather than hallucinating numerical answers. The 5-stage non-destructive data cleaning pipeline automatically sanitizes raw user datasets, while the hybrid Semantic Relationship Detector dynamically discovers joins without hardcoded databases. The system achieves exceptionally low latency by utilizing direct GenAI SDK calls and an optimized sliding-window memory buffer, keeping conversational BI responsive, safe, and enterprise-ready.",
     tech: ["Next.js", "FastAPI", "Pandas", "Plotly Express", "Gemini 3.0 Flash", "Docker", "Python", "TypeScript"],
     metrics: [
