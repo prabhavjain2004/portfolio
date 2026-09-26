@@ -95,10 +95,6 @@ export default function About() {
                 <h3 className="text-xl font-serif text-white">Jain (Deemed-to-be University)</h3>
                 <p className="text-sm font-mono text-gray-500 uppercase tracking-wider">B.Tech, CSE — AIML | 2023 – Present</p>
               </div>
-              <div>
-                <h3 className="text-lg font-serif text-gray-300">St. Joseph's Convent School</h3>
-                <p className="text-sm font-mono text-gray-500 uppercase tracking-wider">High School Diploma, Math & CS</p>
-              </div>
             </div>
           </div>
         </div>

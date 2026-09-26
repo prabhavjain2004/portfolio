@@ -6,7 +6,7 @@ const experiences = [
     bullets: [
       "Architected and shipped an internal task management, real-time communication, and team collaboration platform (similar to ClickUp) as the sole engineer, owning system architecture, data modeling, and backend logic end-to-end.",
       "Developed modular AI automations and multi-step workflows using Python, LangChain, and Docker to eliminate repetitive cross-functional operations across teams.",
-      "Diagnosed and resolved critical software issues across key production repositories, improving system stability and optimizing user-facing transactional workflows (keep internal platform names abstract).",
+      "Diagnosed and resolved critical software issues across key production repositories, improving system stability and optimizing user-facing transactional workflows.",
       "Built automated administrative integrations using Google Apps Script, REST APIs, and Redis caching to reduce operational friction.",
       "Accelerated engineering throughput and code execution velocity by leveraging modern agentic toolchains including Claude Code and Google Antigravity."
     ]

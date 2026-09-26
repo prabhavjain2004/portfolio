@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const skillCategories = [
   {
     title: "AI & Agent Orchestration",
-    skills: ["LangGraph", "LangChain", "Multi-Agent Systems", "RAG Pipelines", "Tool Calling", "ReAct Pattern", "Human-in-the-Loop", "Supervisor / Worker", "State-Machine Workflows", "LangGraph Checkpointers", "Multi-Tier Memory", "Claude Code", "Google Antigravity"]
+    skills: ["Mastra", "LangGraph", "LangChain", "Multi-Agent Systems", "RAG Pipelines", "Tool Calling", "ReAct Pattern", "Human-in-the-Loop", "Supervisor / Worker", "State-Machine Workflows", "LangGraph Checkpointers", "Multi-Tier Memory", "Claude Code", "Google Antigravity"]
   },
   {
     title: "Evaluation & Reliability",
@@ -19,7 +19,7 @@ const skillCategories = [
   },
   {
     title: "Backend & Production Infra",
-    skills: ["FastAPI", "NestJS", "Node.js", "Python (asyncio, pytest)", "Docker", "GCP", "Vercel", "BullMQ", "REST APIs", "Webhooks"]
+    skills: ["FastAPI", "NestJS", "Node.js", "Python (asyncio, pytest)", "Prisma", "Bun", "Docker", "GCP", "Vercel", "BullMQ", "REST APIs", "Webhooks"]
   },
   {
     title: "Frontend & Interfaces",
