@@ -51,7 +51,7 @@ export default function Experience() {
             <div key={idx} className="group border-t border-gray-900 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 hover:bg-[#050505] transition-colors px-4 -mx-4 rounded-2xl">
               
               <div className="md:col-span-3">
-                <span className="text-xs font-mono uppercase tracking-widest text-gray-500 group-hover:text-accent transition-colors">
+                <span className="text-xs font-mono uppercase tracking-widest text-gray-400 group-hover:text-accent transition-colors">
                   {exp.dates}
                 </span>
               </div>
@@ -59,7 +59,7 @@ export default function Experience() {
               <div className="md:col-span-4">
                 <h3 className="text-3xl font-serif text-white mb-2">
                   {exp.company}
-                  {exp.type && <span className="ml-3 text-[10px] font-mono border border-gray-800 px-2 py-0.5 rounded text-gray-500 uppercase vertical-middle align-middle">Intern</span>}
+                  {exp.type && <span className="ml-3 text-[10px] font-mono border border-gray-800 px-2 py-0.5 rounded text-gray-400 uppercase vertical-middle align-middle">Intern</span>}
                 </h3>
                 <h4 className="text-sm font-sans text-gray-400">{exp.role}</h4>
               </div>

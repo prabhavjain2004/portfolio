@@ -58,3 +58,26 @@ body {
   -webkit-text-stroke: 1px #fff;
   transition: all 0.3s ease;
 }
+
+/* Projects index: outlined title that fills in left-to-right on hover */
+.work-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+}
+
+.work-fill {
+  color: #fff;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-row:hover .work-fill,
+.work-row:focus-visible .work-fill {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (hover: none) {
+  .work-fill {
+    clip-path: inset(0);
+  }
+}

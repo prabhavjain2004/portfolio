@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 
 const stats = [
   { value: "8+", label: "Specialized Agents" },
-  { value: "8K+", label: "Concurrent Scale" },
+  { value: "8K+", label: "Users Designed For" },
   { value: "<5m", label: "Risk Alert SLA" },
   { value: "04", label: "Platforms Shipped (Sole Eng)" },
 ];
@@ -85,7 +85,7 @@ export default function About() {
           </p>
           
           <p className="text-lg font-light text-gray-400 font-sans max-w-md mb-12">
-            Leading the AI agent layer for a university platform serving <span className="text-white">8,000+ users</span>, engineered multi-agent workflows at <span className="text-white">AegisOps</span>, and shipped 4 platforms end-to-end as sole engineer at <span className="text-white">TapNex</span>.
+            Leading the AI agent layer for a university platform built for <span className="text-white">8,000+ users</span>, engineered multi-agent workflows at <span className="text-white">AegisOps</span>, and shipped 4 platforms end-to-end as sole engineer at <span className="text-white">TapNex</span>.
           </p>
 
           <div className="border-t border-gray-900 pt-12">
@@ -93,7 +93,7 @@ export default function About() {
             <div className="space-y-4">
               <div>
                 <h3 className="text-xl font-serif text-white">Jain (Deemed-to-be University)</h3>
-                <p className="text-sm font-mono text-gray-500 uppercase tracking-wider">B.Tech, CSE — AIML | 2023 – Present</p>
+                <p className="text-sm font-mono text-gray-400 uppercase tracking-wider">B.Tech, CSE — AIML | 2023 – Present</p>
               </div>
             </div>
           </div>

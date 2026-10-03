@@ -97,7 +97,7 @@ export default function HowIBuildAgents() {
               </div>
 
               <div className="border-t border-gray-900 pt-6 mt-4">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 block mb-3">Capabilities</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400 block mb-3">Capabilities</span>
                 <ul className="space-y-2">
                   {phase.items.map((item, i) => (
                     <li key={i} className="text-xs font-mono text-gray-400 flex items-center gap-2">

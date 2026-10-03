@@ -39,7 +39,7 @@ export default function Contact() {
         </div>
 
         <div className="mt-12">
-          <p className="text-gray-600 font-mono text-sm uppercase tracking-widest">
+          <p className="text-gray-500 font-mono text-sm uppercase tracking-widest">
             Direct Line <span className="mx-2 text-gray-800">/</span> +91 78985 75626
           </p>
         </div>

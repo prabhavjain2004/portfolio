@@ -5,6 +5,7 @@ export interface Project {
   title: string;
   year: string;
   tagline: string;
+  stat: { value: string; label: string };
   problem: string;
   approach: string;
   outcome: string;
@@ -23,16 +24,17 @@ export const projectsData: Project[] = [
     id: "ai-training-placement",
     title: "AI Training and Placement",
     year: "2026",
-    tagline: "8 specialized agents · 8,000+ users · <5m alert breach",
+    tagline: "8 specialized agents · built for 8,000+ users · <5m risk alerts",
+    stat: { value: "8", label: "specialized agents" },
     problem: "University training and placement cells operate on fragmented systems — attendance tracked on spreadsheets, assessments on generic platforms with no institutional context, and at-risk students identified too late for intervention. The platform required an institution-grade AI agent layer to unify syllabus progression, personalized practice, resume analysis, and real-time student risk monitoring for 8,000+ concurrent users.",
     approach: "I designed and built the full AI agent layer comprising 8 specialized agents: Syllabus Parser, Learning Path Generator, Resume Analyzer, Risk Detection System, AI Practice Assistant, Content Curation, Interview Prep, and a Natural Language Query Router that dispatches requests to 3+ downstream agents based on intent. Alongside full ownership of the agent layer, I contributed ~50% of the NestJS backend, engineering PostgreSQL schemas, Redis caching, and BullMQ job queue pipelines powering background agent tasks.",
     evaluation: "Built evaluation workflows across the agent layer using LLM-as-Judge scoring and task success metrics, making agent behavior measurable rather than relying on subjective outputs.",
     observability: "Instrumented agent execution with Langfuse for end-to-end observability and full audit logging. Implemented guardrails, retry logic, timeout handling, and failure recovery to keep agents stable under production load.",
     alertCallout: "Risk Detection System triggers alerts within 5 minutes of threshold breach with full audit logging.",
-    outcome: "Deployed to serve 8,000+ concurrent users with an API p95 target under 300ms and agent response p95 under 4s. The Risk Detection System proactively alerts trainers within 5 minutes of a student breaching an attendance or assessment threshold, and the NL Query Router accurately orchestrates across the 8-agent surface.",
+    outcome: "Designed for 8,000+ concurrent users, with an API p95 target under 300ms and an agent response p95 target under 4s. The Risk Detection System proactively alerts trainers within 5 minutes of a student breaching an attendance or assessment threshold, and the NL Query Router accurately orchestrates across the 8-agent surface.",
     tech: ["LangGraph", "NestJS", "PostgreSQL", "Redis", "BullMQ", "Langfuse", "Gemini API", "TypeScript"],
     metrics: [
-      "8,000+ concurrent users",
+      "Designed for 8,000+ concurrent users",
       "8 specialized agents orchestrated via NL Query Router",
       "Risk alerts triggered within 5 minutes of threshold breach",
       "Evaluation workflows across agents with LLM-as-Judge scoring",
@@ -47,6 +49,7 @@ export const projectsData: Project[] = [
     title: "TapNex",
     year: "2025",
     tagline: "Four production platforms shipped as sole engineer · 70% manual reduction",
+    stat: { value: "4", label: "platforms shipped, sole engineer" },
     problem: "Live campus events spanning ticketing, hostel meal allocation, gaming café reservations, and on-site registration suffered from disconnected manual operations, causing queue buildup, meal count drift, and double-booked facilities.",
     approach: "Designed and shipped 4 production platforms (ticketing, registration, hostel meals, and gaming café) as the sole engineer. Led product scoping, frontend implementation, backend services, database design, and deployment. Integrated Razorpay and Cashfree payment gateways for complete payment processing.",
     outcome: "The 4 platforms collectively reduced manual processing overhead by 70%. Successfully eliminated check-in queues through QR entry validation with real-time deduplication and delivered live tracking dashboards for event organizers.",
@@ -63,6 +66,7 @@ export const projectsData: Project[] = [
     title: "Land Data Intelligence Platform",
     year: "2026",
     tagline: "Python automation pipelines and webhook-triggered workflows for real-time event handling.",
+    stat: { value: "3", label: "automation pipelines" },
     problem: "Large-scale land documentation and compliance workflows involve continuous document uploads, hearing deadlines, and status updates that require reliable automated pipelines across platform modules without manual coordination delay.",
     approach: "Built Python automation pipelines for notification dispatch, data fetching, and legal/revenue document parsing. Designed webhook-triggered workflows for real-time event handling across platform modules, ensuring reliable data synchronization and delivery status logging.",
     outcome: "Automated notification dispatch and document processing workflows eliminated manual data entry, enabling instant event propagation across platform modules with full delivery tracking.",
@@ -78,6 +82,7 @@ export const projectsData: Project[] = [
     title: "Autonomous Research Execution Agent",
     year: "2025",
     tagline: "Supervisor agent coordinating specialized workers via state-machine transitions and ReAct loops.",
+    stat: { value: "ReAct", label: "supervisor + worker loops" },
     problem: "Single-prompt LLM research workflows produce unchecked outputs and lack structured coordination for multi-step information gathering. Building an autonomous research system requires orchestrating specialized roles, managing state transitions, and handling interrupts during long runs.",
     approach: "Designed a hierarchical multi-agent system where a Supervisor Agent coordinates specialized worker agents through state-machine transitions and interrupt handling. Specialized workers execute ReAct reasoning loops with dynamic tool calling for multi-step retrieval and structured output generation.",
     evaluation: "Implemented context-aware evaluation and reflection steps across worker agents to verify research consistency before producing final structured reports.",
@@ -97,6 +102,7 @@ export const projectsData: Project[] = [
     title: "AI Interviewer System",
     year: "2025",
     tagline: "Stateful LangGraph workflow with session memory and context-aware candidate evaluation.",
+    stat: { value: "Stateful", label: "LangGraph interrupts & resume" },
     problem: "Standard interview preparation tools ask generic questions without grounding candidate answers against their specific resume claims, missing articulation gaps between what resumes claim and what candidates can explain under pressure.",
     approach: "Built a stateful LangGraph workflow with session memory and interrupt handling where the agent pauses for user input, evaluates candidate responses in context, and resumes with full conversational continuity. Dynamically generates role-specific questions from uploaded resume and JD context.",
     evaluation: "Evaluates candidate responses in real-time context and generates structured reports with scores, gap analysis, and targeted improvement suggestions.",
@@ -115,17 +121,20 @@ export const projectsData: Project[] = [
     id: "cdas",
     title: "CDAS.ai",
     year: "2026",
-    tagline: "Autonomous 5-stage cleaning, dynamic schema-aware prompt injection, and secure code-execution sandbox for conversational BI.",
+    tagline: "Autonomous 5-stage cleaning, schema-aware prompt injection, and code-executed answers (not LLM arithmetic) for conversational BI.",
+    stat: { value: "5-stage", label: "automated data cleaning" },
     problem: "Retrieval-Augmented Generation (RAG) is fundamentally designed for unstructured text, making it highly unreliable and mathematically inaccurate when applied to structured, multi-file tabular data. Traditional conversational BI systems suffer from severe LLM hallucinations during arithmetic calculations, struggle with dynamic schema matching, and are bloated by heavy orchestration frameworks that add latency, introduce dependency risks, and strip away granular control over prompt construction and JSON parsing.",
-    approach: "I designed and built CDAS.ai from the ground up to guarantee 100% mathematical accuracy and secure deterministic execution. I bypassed unstructured RAG entirely in favor of Schema-Aware Prompt Injection—automatically profiling uploaded CSV files (data types, statistical distributions, null ratios, and sample rows) to inject a compact, highly structured context directly into the LLM. Rather than relying on the LLM to perform calculations, the agent is restricted to acting purely as a code author, generating strict Pandas/Plotly code executed within a hardened Python namespace execution sandbox. I integrated directly with the native Google GenAI SDK (Gemini 3.0 Flash), providing precise control over JSON formatting, schema validation, and recovery. To support multi-table queries, I built a hybrid Semantic Relationship Detector combining an LLM schema proposal layer with programmatic validation via Jaccard index overlap checks. For stateful memory, I engineered a highly optimized sliding-window memory system using collections.deque to preserve the last 5 conversation turns in-memory, keeping latency and token costs strictly bounded.",
-    outcome: "CDAS.ai delivers bulletproof mathematical accuracy by executing code rather than hallucinating numerical answers. The 5-stage non-destructive data cleaning pipeline automatically sanitizes raw user datasets, while the hybrid Semantic Relationship Detector dynamically discovers joins without hardcoded databases. The system achieves exceptionally low latency by utilizing direct GenAI SDK calls and an optimized sliding-window memory buffer, keeping conversational BI responsive, safe, and enterprise-ready.",
-    tech: ["Next.js", "FastAPI", "Pandas", "Plotly Express", "Gemini 3.0 Flash", "Docker", "Python", "TypeScript"],
+    approach: "I designed and built CDAS.ai from the ground up so that every numeric answer is computed by executed code instead of LLM arithmetic. I bypassed unstructured RAG entirely in favor of Schema-Aware Prompt Injection—automatically profiling uploaded CSV files (data types, statistical distributions, null ratios, and sample rows) to inject a compact, highly structured context directly into the LLM. Rather than relying on the LLM to perform calculations, the agent is restricted to acting purely as a code author, generating strict Pandas/Plotly code executed in a restricted namespace (only pandas, Plotly Express and the uploaded dataframes in scope) after an AST check that rejects imports and eval/exec/open calls. I integrated directly with the native Google GenAI SDK (Gemini Flash), providing precise control over JSON formatting, schema validation, and recovery. To support multi-table queries, I built a hybrid Semantic Relationship Detector combining an LLM schema proposal layer with programmatic validation via Jaccard index overlap checks. For stateful memory, I engineered a highly optimized sliding-window memory system using collections.deque to preserve the last 5 conversation turns in-memory, keeping latency and token costs bounded.",
+    evaluation: "Built an evaluation harness with ground-truth test cases that scores numeric answers against expected values within a tolerance, checks response type, tests that the system declines instead of hallucinating, and tracks sandboxed code-execution success and p50/p95 latency.",
+    outcome: "CDAS.ai computes numeric answers by executing generated Pandas code rather than asking the LLM to do arithmetic. The 5-stage cleaning pipeline (type inference, date parsing, null imputation, IQR outlier flagging that never removes rows, string normalization) prepares raw user datasets, while the hybrid Semantic Relationship Detector dynamically discovers joins without hardcoded databases. Direct GenAI SDK calls and a bounded sliding-window memory keep prompts small, and every request is traced with latency logging.",
+    tech: ["Next.js", "FastAPI", "Pandas", "Plotly Express", "Gemini Flash", "Docker", "Python", "TypeScript"],
     metrics: [
       "Autonomous 5-stage cleaning pipeline (datetime inference, median/mode imputation, IQR outlier flags, normalizations)",
       "Hybrid Semantic Join Detector: LLM schema proposal + Jaccard index data overlap validation",
-      "100% mathematical accuracy: restrictive Python code generation vs. direct LLM calculation",
-      "Secure Sandbox: restricted Python execution namespace preventing data or server compromise",
-      "Bounded collections.deque Memory: 5-turn sliding window for ultra-low latency & token efficiency",
+      "Computed, not guessed: numeric answers come from executed Pandas code instead of LLM arithmetic",
+      "Restricted execution: AST check blocks imports and eval/exec/open; namespace limited to pandas, Plotly and the uploaded dataframes",
+      "Evaluation harness: ground-truth cases, numeric tolerance, hallucination-refusal checks, p50/p95 latency",
+      "Bounded collections.deque memory: 5-turn sliding window to keep latency and token cost down",
       "Schema-Aware Prompt Injection: profiling tabular structures directly into context instead of fragile RAG",
       "Direct Google GenAI SDK integration: minimal dependency weight, custom JSON parsing, and rapid error recovery"
     ],

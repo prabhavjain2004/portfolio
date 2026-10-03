@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ExternalLink, Eye, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const skillCategories = [
   {
     title: "AI & Agent Orchestration",
-    skills: ["Mastra", "LangGraph", "LangChain", "Multi-Agent Systems", "RAG Pipelines", "Tool Calling", "ReAct Pattern", "Human-in-the-Loop", "Supervisor / Worker", "State-Machine Workflows", "LangGraph Checkpointers", "Multi-Tier Memory", "Claude Code", "Google Antigravity"]
+    skills: ["LangGraph", "LangChain", "Multi-Agent Systems", "RAG Pipelines", "Tool Calling", "ReAct Pattern", "Human-in-the-Loop", "Supervisor / Worker", "State-Machine Workflows", "LangGraph Checkpointers", "Multi-Tier Memory", "Claude Code", "Google Antigravity"]
   },
   {
     title: "Evaluation & Reliability",
@@ -15,7 +15,7 @@ const skillCategories = [
   },
   {
     title: "Data & Vector Stores",
-    skills: ["PostgreSQL", "pgvector", "ChromaDB", "FAISS", "Pinecone", "Redis", "Supabase"]
+    skills: ["PostgreSQL", "pgvector", "ChromaDB", "Redis", "Supabase"]
   },
   {
     title: "Backend & Production Infra",
@@ -23,7 +23,7 @@ const skillCategories = [
   },
   {
     title: "Frontend & Interfaces",
-    skills: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Flutter"]
+    skills: ["React", "Next.js", "Tailwind CSS", "TypeScript"]
   }
 ];
 
@@ -63,6 +63,15 @@ const certifications = [
 export default function Skills() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!selectedImage) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [selectedImage]);
+
   return (
     <section id="skills" className="py-32 px-6 md:px-12 border-t border-gray-900 selection:bg-accent selection:text-black">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -100,18 +109,18 @@ export default function Skills() {
                     <span className="text-white font-serif text-xl group-hover:text-accent transition-colors">{cert.name}</span>
                     <div className="flex gap-3">
                       {cert.link && (
-                        <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">
+                        <a href={cert.link} target="_blank" rel="noopener noreferrer" aria-label={`Verify ${cert.name} credential`} className="text-gray-400 hover:text-white transition-colors">
                           <ExternalLink size={18} />
                         </a>
                       )}
                       {cert.image && (
-                        <button onClick={() => setSelectedImage(cert.image!)} className="text-gray-500 hover:text-white transition-colors">
+                        <button onClick={() => setSelectedImage(cert.image!)} aria-label={`View ${cert.name} certificate`} className="text-gray-400 hover:text-white transition-colors">
                           <Eye size={18} />
                         </button>
                       )}
                     </div>
                   </div>
-                  <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">{cert.issuer} — {cert.date}</span>
+                  <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">{cert.issuer} — {cert.date}</span>
                 </div>
               ))}
             </div>
@@ -122,6 +131,9 @@ export default function Skills() {
       <AnimatePresence>
         {selectedImage && (
           <motion.div 
+            role="dialog"
+            aria-modal="true"
+            aria-label="Certificate"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

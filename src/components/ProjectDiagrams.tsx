@@ -220,16 +220,16 @@ export const CDASArchitecture = () => (
     {/* Divider line */}
     <line x1="360" y1="40" x2="360" y2="480" stroke="var(--diagram-border)" strokeDasharray="4 4" />
 
-    {/* Right Column: Sandboxed Execution & Synthesis */}
+    {/* Right Column: Code Execution & Synthesis */}
     <g>
       <text x="550" y="25" textAnchor="middle" fill="var(--diagram-text-bright)" className="text-[12px] uppercase tracking-widest font-bold font-mono">
-        2. Sandboxed Execution & Synthesis
+        2. Code Execution & Synthesis
       </text>
       
       <Node x="445" y="60" width="210" height="45" title="Natural Language Query" subtitle="Next.js Chat UI" color="var(--diagram-teal)" />
       <Node x="445" y="140" width="210" height="45" title="Context & Memory Assembler" subtitle="Sliding Window (deque)" color="var(--diagram-border)" />
-      <Node x="445" y="220" width="210" height="45" title="Gemini 3.0 Flash" subtitle="Strict Code Generation Only" color="var(--diagram-amber)" />
-      <Node x="445" y="300" width="210" height="45" title="Python Sandbox" subtitle="Isolated Execution Namespace" color="var(--diagram-coral)" />
+      <Node x="445" y="220" width="210" height="45" title="Gemini Flash" subtitle="Strict Code Generation Only" color="var(--diagram-amber)" />
+      <Node x="445" y="300" width="210" height="45" title="Restricted Execution" subtitle="AST Check + Limited Namespace" color="var(--diagram-coral)" />
 
       {/* Branching outputs */}
       <Node x="380" y="385" width="155" height="45" title="Plotly Serializer" subtitle="Interactive Chart" color="var(--diagram-teal)" />
